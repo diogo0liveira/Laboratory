@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.dao.mobile.artifact.sqlite
 
 import android.database.sqlite.SQLiteStatement
@@ -13,74 +15,51 @@ class BindValue(@NonNull private var statement: SQLiteStatement, private val cou
 {
     private var index: Int = 1
 
-    fun set(value: Int?)
+    fun set(value: Int)
     {
-        value?.let {
-            statement.bindLong(index, it.toLong())
-            next()
-        } ?: kotlin.run {
-            statement.bindNull(index)
-        }
+        statement.bindLong(index, value.toLong())
+        next()
     }
 
-    fun set(value: Short?)
+    fun set(value: Short)
     {
-        value?.let {
-            statement.bindLong(index, it.toLong())
-            next()
-        } ?: kotlin.run {
-            statement.bindNull(index)
-        }
+        statement.bindLong(index, value.toLong())
+        next()
     }
 
-    fun set(value: Long?)
+    fun set(value: Long)
     {
-        value?.let {
-            statement.bindLong(index, it)
-            next()
-        } ?: kotlin.run {
-            statement.bindNull(index)
-        }
+        statement.bindLong(index, value)
+        next()
     }
 
-    fun set(value: Double?)
+    fun set(value: Double)
     {
-        value?.let {
-            statement.bindDouble(index, it)
-            next()
-        } ?: kotlin.run {
-            statement.bindNull(index)
-        }
+        statement.bindDouble(index, value)
+        next()
     }
 
-    fun set(value: BigDecimal?)
+    fun set(value: BigDecimal)
     {
-        value?.let {
-            statement.bindDouble(index, it.toDouble())
-            next()
-        } ?: kotlin.run {
-            statement.bindNull(index)
-        }
+        statement.bindDouble(index, value.toDouble())
+        next()
     }
 
-    fun set(value: String?)
+    fun set(value: String)
     {
-        value?.let {
-            statement.bindString(index, it)
-            next()
-        } ?: kotlin.run {
-            statement.bindNull(index)
-        }
+        statement.bindString(index, value)
+        next()
     }
 
-    fun set(value: ByteArray?)
+    fun set(value: ByteArray)
     {
-        value?.let {
-            statement.bindBlob(index, it)
-            next()
-        } ?: kotlin.run {
-            statement.bindNull(index)
-        }
+        statement.bindBlob(index, value)
+        next()
+    }
+
+    fun bindNull()
+    {
+        statement.bindNull(index)
     }
 
     private operator fun next()

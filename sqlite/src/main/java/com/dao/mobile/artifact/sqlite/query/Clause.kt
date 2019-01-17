@@ -136,7 +136,7 @@ class Clause
 
     fun isNullOrEmpty(predicate: Predicate, arg: Pair<String, Any>): Clause
     {
-        val restriction = IS_NULL.plus(SPACE).plus(Predicate.AND).plus(IS_EMPTY)
+        val restriction = IS_NULL.plus(SPACE).plus(Predicate.OR).plus(IS_EMPTY)
         build(predicate, restriction, arg)
         return this
     }

@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
 package com.dao.mobile.artifact.sqlite.helper
 
@@ -11,6 +11,7 @@ import com.dao.mobile.artifact.sqlite.query.Clause
 import com.dao.mobile.artifact.sqlite.query.QueryCursor
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
+import org.jetbrains.anko.db.update
 import java.util.*
 
 /**
@@ -22,11 +23,13 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
 {
     private val manager: DBManager by lazy { DBManager.initialize(this) }
 
-    abstract fun onCreate(database: SQLiteDatabase)
+    internal abstract fun onCreate(database: SQLiteDatabase)
 
-    abstract fun onConfigure(database: SQLiteDatabase)
+    internal fun onConfigure(database: SQLiteDatabase)
+    {
+    }
 
-    abstract fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int)
+    internal abstract fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int)
 
     protected fun writable(transaction: Boolean = false): SQLiteDatabase
     {
@@ -52,7 +55,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         return manager.database.use {
             val clause = constraints(model)
             val result = ResultDatabase(Action.UPDATE)
-            result.forUpdate(update(table, contentValues(model), clause.where(), clause.argsToString()))
+            result.forUpdate(update(table, *contentPairs(model)).whereArgs(clause.where(), *clause.args()).exec())
             result
         }
     }
@@ -61,7 +64,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
     {
         return manager.database.use {
             val clause = constraints(model)
-            val result = ResultDatabase(Action.UPDATE)
+            val result = ResultDatabase(Action.DELETE)
             result.forDelete(delete(table, clause.where(), *clause.args()))
             result
         }
@@ -95,6 +98,8 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
      * Preenche um "contentValues" utilizado quando usado inserir ou atualizar dados.
      */
     protected abstract fun contentValues(model: T, insert: Boolean = false): ContentValues
+
+    protected abstract fun contentPairs(model: T, insert: Boolean = false): Array<Pair<String, Any?>>
 
     /**
      * Preenche um "clause" com os valores chave (primary key) pra identificar um model como unico.

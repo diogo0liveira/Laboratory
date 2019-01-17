@@ -10,7 +10,8 @@ android {
 
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.dao.mobile.artifact.sqlite.TestAndroidJUnitRunner"
     }
 
     buildTypes {
@@ -34,6 +35,6 @@ dependencies {
     implementation project(':common')
 
     testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "androidx.test:runner:$runnerVersion"
+    androidTestImplementation "androidx.test.ext:junit:$extJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
 }

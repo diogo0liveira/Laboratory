@@ -18,7 +18,7 @@ class ResultDatabase(private val action: Action)
     private var count: Int = 0
 
     /**
-     * Id do objeto inserido ou "-1" quando update.
+     * Id do objeto inserido ou "-1" quando insert/update.
      *
      * @return Id do objeto.
      */
@@ -28,7 +28,7 @@ class ResultDatabase(private val action: Action)
     }
 
     /**
-     * Quantidade de linhas afetadas após o delete.
+     * Quantidade de linhas afetadas após o update/delete.
      *
      * @return Quantidade de linhas.
      */
@@ -38,7 +38,7 @@ class ResultDatabase(private val action: Action)
     }
 
     /**
-     * Lista de rows quando utilizado statementInsert.
+     * Lista de rows quando utilizado statementInsert/statementUpdate.
      *
      * @return Id do objeto.
      */
@@ -69,7 +69,7 @@ class ResultDatabase(private val action: Action)
 
     fun forInsert(row: Long)
     {
-        this.success = row.isNegative()
+        this.success = row.isPositive()
         this.row = row
     }
 
@@ -77,6 +77,7 @@ class ResultDatabase(private val action: Action)
     {
         this.success = row.isPositive()
         this.row = row.toLong()
+        this.count = 1
     }
 
     fun forDelete(count: Int)
