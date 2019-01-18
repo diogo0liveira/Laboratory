@@ -1,18 +1,16 @@
-@file:Suppress("unused")
-
 package com.dao.mobile.artifact.sqlite.query
 
-import android.content.ContentValues
 import com.dao.mobile.artifact.sqlite.Action
 import com.dao.mobile.artifact.sqlite.ResultDatabase
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import org.jetbrains.anko.db.update
 
 /**
  * Created in 23/08/18 15:28.
  *
  * @author Diogo Oliveira.
  */
-class Update(private val table: String, private val manager: DBManager, private val values: ContentValues)
+class Update(private val table: String, private val manager: DBManager)
 {
     private val where: Where by lazy { Where() }
 
@@ -22,11 +20,11 @@ class Update(private val table: String, private val manager: DBManager, private 
         return where
     }
 
-    fun exec(): ResultDatabase
+    fun exec(vararg values: Pair<String, Any?>): ResultDatabase
     {
         return manager.database.use {
             val result = ResultDatabase(Action.UPDATE)
-            result.forStmUpdate(update(table, values, where.clause.where(), where.clause.argsToString()))
+            result.forUpdate(update(table, *values).whereArgs(where.clause.where(), *where.clause.args()).exec())
             result
         }
     }
@@ -45,9 +43,9 @@ class Update(private val table: String, private val manager: DBManager, private 
             this.clause = clause
         }
 
-        fun exec(): ResultDatabase
+        fun exec(vararg values: Pair<String, Any?>): ResultDatabase
         {
-            return this@Update.exec()
+            return this@Update.exec(*values)
         }
     }
 }

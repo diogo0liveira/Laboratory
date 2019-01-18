@@ -4,6 +4,7 @@ package com.dao.mobile.artifact.sqlite.helper
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
+import androidx.annotation.VisibleForTesting
 import com.dao.mobile.artifact.sqlite.Action
 import com.dao.mobile.artifact.sqlite.BindValue
 import com.dao.mobile.artifact.sqlite.ResultDatabase
@@ -25,9 +26,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
 
     internal abstract fun onCreate(database: SQLiteDatabase)
 
-    internal fun onConfigure(database: SQLiteDatabase)
-    {
-    }
+    internal fun onConfigure(database: SQLiteDatabase) { }
 
     internal abstract fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int)
 
@@ -128,4 +127,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
 
         return hashSetOf()
     }
+
+    @VisibleForTesting
+    fun manager(): DBManager = manager
 }

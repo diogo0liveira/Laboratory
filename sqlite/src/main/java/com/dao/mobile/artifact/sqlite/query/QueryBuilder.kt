@@ -2,9 +2,12 @@
 
 package com.dao.mobile.artifact.sqlite.query
 
-import android.content.ContentValues
+import android.database.CursorJoiner
+import android.database.CursorWrapper
+import android.database.sqlite.SQLiteDatabase
 import com.dao.mobile.artifact.common.Logger
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import java.util.*
 
 /**
  * Created in 23/08/18 15:36.
@@ -13,7 +16,7 @@ import com.dao.mobile.artifact.sqlite.helper.DBManager
  */
 class QueryBuilder(private val table: String, private val manager: DBManager)
 {
-    constructor(join: InnerJoin, manager: DBManager) : this(join.build(), manager)
+    constructor(join: Join, manager: DBManager) : this(join.build(), manager)
 
     private var logger = false
 
@@ -29,14 +32,14 @@ class QueryBuilder(private val table: String, private val manager: DBManager)
         return Exists(logger, table, manager)
     }
 
-    fun insert(values: ContentValues): Insert
+    fun insert(): Insert
     {
-        return Insert(table, manager, values)
+        return Insert(table, manager)
     }
 
-    fun update(values: ContentValues): Update
+    fun update(): Update
     {
-        return Update(table, manager, values)
+        return Update(table, manager)
     }
 
     fun delete(): Delete

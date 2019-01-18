@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.dao.mobile.artifact.sqlite.query
 
 import com.dao.mobile.artifact.sqlite.Action

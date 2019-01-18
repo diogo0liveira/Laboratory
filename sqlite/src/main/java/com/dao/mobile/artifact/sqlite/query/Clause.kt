@@ -1,5 +1,3 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate")
-
 package com.dao.mobile.artifact.sqlite.query
 
 /**

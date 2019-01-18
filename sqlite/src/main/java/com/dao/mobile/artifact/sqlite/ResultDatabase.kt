@@ -71,6 +71,7 @@ class ResultDatabase(private val action: Action)
     {
         this.success = row.isPositive()
         this.row = row
+        this.count = 1
     }
 
     fun forUpdate(row: Int)
