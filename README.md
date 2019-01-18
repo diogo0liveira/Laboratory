@@ -7,6 +7,15 @@ Utilitário para projetos Android.
 ### Sqlite-common [ ![Download](https://api.bintray.com/packages/diogo0liveira/android/sqlite-common/images/download.svg) ](https://bintray.com/diogo0liveira/android/sqlite-common/_latestVersion)
 
 DBHelper para "SQLiteOpenHelper" com algumas operações comuns encapsuladas.
+```groovy
+dependencies {
+    implementation 'com.dao.mobile.artifact:sqlite:1.0.0'
+}
 ```
-implementation 'com.dao.mobile.artifact:sqlite:1.0.0'
+
+```kotlin
+class UserDataSource : DBHelper<User>(TABLE_USER)
+{
+    fun insert(user: User): ResultDatabase = insert(user)
+}
 ```
