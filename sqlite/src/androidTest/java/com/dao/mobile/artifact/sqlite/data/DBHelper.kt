@@ -16,7 +16,7 @@ abstract class DBHelper<T>(table: String) : DBConnectionHelper<T>(DB_NAME, DB_VE
 {
     override fun onCreate(database: SQLiteDatabase)
     {
-        database.createTable(TABLE_MODEL, true, *dumpTableMovie())
+        database.createTable(TABLE_MODEL, true, *dumpTableModel())
     }
 
     override fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int)
@@ -25,7 +25,7 @@ abstract class DBHelper<T>(table: String) : DBConnectionHelper<T>(DB_NAME, DB_VE
         onCreate(database)
     }
 
-    private fun dumpTableMovie(): Array<Pair<String, SqlType>>
+    private fun dumpTableModel(): Array<Pair<String, SqlType>>
     {
      return  arrayOf(
                 COLUMN_ID   to INTEGER + NOT_NULL + PRIMARY_KEY,

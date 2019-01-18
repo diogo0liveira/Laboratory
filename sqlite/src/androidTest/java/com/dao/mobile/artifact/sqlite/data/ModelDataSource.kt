@@ -6,14 +6,13 @@ import androidx.annotation.VisibleForTesting
 import com.dao.mobile.artifact.sqlite.BindValue
 import com.dao.mobile.artifact.sqlite.query.Clause
 import com.dao.mobile.artifact.sqlite.query.QueryCursor
-import javax.inject.Inject
 
 /**
  * Created in 03/08/18 13:45.
  *
  * @author Diogo Oliveira.
  */
-class ModelDataSource @Inject constructor() : DBHelper<Model>(TABLE_MODEL)
+class ModelDataSource : DBHelper<Model>(TABLE_MODEL)
 {
     fun deleteAll()
     {
