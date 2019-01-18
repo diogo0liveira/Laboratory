@@ -2,12 +2,7 @@
 
 package com.dao.mobile.artifact.sqlite.query
 
-import android.database.CursorJoiner
-import android.database.CursorWrapper
-import android.database.sqlite.SQLiteDatabase
-import com.dao.mobile.artifact.common.Logger
 import com.dao.mobile.artifact.sqlite.helper.DBManager
-import java.util.*
 
 /**
  * Created in 23/08/18 15:36.
@@ -51,24 +46,5 @@ class QueryBuilder(private val table: String, private val manager: DBManager)
     {
         this.logger = logger
         return this
-    }
-
-    fun raw(sql: String): QueryCursor
-    {
-        return raw(sql, null)
-    }
-
-    fun raw(sql: String, args: Array<String>?): QueryCursor
-    {
-        if(logger)
-        {
-            Logger.d(TAG, "Query: $sql")
-        }
-
-        return QueryCursor(manager.database.use {
-            val cursor = rawQuery(sql, args)
-            cursor.close()
-            cursor
-        })
     }
 }
