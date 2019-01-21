@@ -15,48 +15,72 @@ class BindValue(@NonNull private var statement: SQLiteStatement, private val cou
 {
     private var index: Int = 1
 
+    /**
+     * Bind um inteiro para o statement.
+     */
     fun set(value: Int)
     {
         statement.bindLong(index, value.toLong())
         next()
     }
 
+    /**
+     * Bind um short para o statement.
+     */
     fun set(value: Short)
     {
         statement.bindLong(index, value.toLong())
         next()
     }
 
+    /**
+     * Bind um long para o statement.
+     */
     fun set(value: Long)
     {
         statement.bindLong(index, value)
         next()
     }
 
+    /**
+     * Bind um double para o statement.
+     */
     fun set(value: Double)
     {
         statement.bindDouble(index, value)
         next()
     }
 
+    /**
+     * Bind um bigDecimal para o statement.
+     */
     fun set(value: BigDecimal)
     {
         statement.bindDouble(index, value.toDouble())
         next()
     }
 
+    /**
+     * Bind uma string para o statement.
+     */
     fun set(value: String)
     {
         statement.bindString(index, value)
         next()
     }
 
+    /**
+     * Bind um byteArray para o statement.
+     */
     fun set(value: ByteArray)
     {
         statement.bindBlob(index, value)
         next()
     }
 
+    /**
+     * Bind um null para o statement.
+     */
     fun bindNull()
     {
         statement.bindNull(index)

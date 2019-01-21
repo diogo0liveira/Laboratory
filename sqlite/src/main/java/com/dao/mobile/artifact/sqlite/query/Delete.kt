@@ -6,20 +6,29 @@ import com.dao.mobile.artifact.sqlite.helper.DBManager
 import org.jetbrains.anko.db.delete
 
 /**
- * Created in 23/08/18 13:54.
+ * Wrapper para operação de delete.
  *
+ * Created in 23/08/18 13:54.
  * @author Diogo Oliveira.
  */
 class Delete(private val table: String, private val manager: DBManager)
 {
     private val where: Where by lazy { Where() }
 
+    /**
+     * Clausula WHERE para a operação de delete.
+     */
     fun where(clause: Clause): Where
     {
         where.clause(clause)
         return where
     }
 
+    /**
+     * Executa a operação.
+     *
+     * @return resultDatabase com o resultado da operação.
+     */
     fun exec(): ResultDatabase
     {
         return manager.database.use {
@@ -29,6 +38,9 @@ class Delete(private val table: String, private val manager: DBManager)
         }
     }
 
+    /**
+     * Instância da clausula WHERE para a operação de delete.
+     */
     inner class Where : WhereClause()
     {
         var clause: Clause = Clause()

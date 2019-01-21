@@ -48,7 +48,7 @@ class ResultDatabase(private val action: Action)
     }
 
     /**
-     * Resultado da operação
+     * Resultado da operação.
      *
      * @return TRUE para operação bem sucedida.
      */
@@ -57,16 +57,25 @@ class ResultDatabase(private val action: Action)
         return success
     }
 
+    /**
+     * Tipo da operação.
+     */
     fun getAction(): Action
     {
         return action
     }
 
+    /**
+     * Adiciona o resultado da operação.
+     */
     fun setResult(success: Boolean)
     {
         this.success = success
     }
 
+    /**
+     * Adiciona o resultado da operação para um insert.
+     */
     fun forInsert(row: Long)
     {
         this.success = row.isPositive()
@@ -74,6 +83,9 @@ class ResultDatabase(private val action: Action)
         this.count = 1
     }
 
+    /**
+     * Adiciona o resultado da operação para um update.
+     */
     fun forUpdate(row: Int)
     {
         this.success = row.isPositive()
@@ -81,24 +93,36 @@ class ResultDatabase(private val action: Action)
         this.count = 1
     }
 
+    /**
+     * Adiciona o resultado da operação para um delete.
+     */
     fun forDelete(count: Int)
     {
         this.success = count.isPositive()
         this.count = count
     }
 
+    /**
+     * Adiciona o resultado da operação para um "statement" insert.
+     */
     fun forStmInsert(id: Long)
     {
         rows.add(id)
         this.success = id.isNegative()
     }
 
+    /**
+     * Adiciona o resultado da operação para um "statement" update.
+     */
     fun forStmUpdate(row: Int)
     {
         this.count += row
         this.success = row.isPositive()
     }
 
+    /**
+     * Adiciona o resultado da operação para um "statement" delete.
+     */
     fun forStmDelete(row: Int)
     {
         this.count += row

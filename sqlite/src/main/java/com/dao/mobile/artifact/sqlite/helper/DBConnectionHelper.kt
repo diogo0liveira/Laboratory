@@ -16,8 +16,9 @@ import org.jetbrains.anko.db.update
 import java.util.*
 
 /**
- * Created in 22/08/18 14:18.
+ * Estabelece uma conexão com o banco.
  *
+ * Created in 22/08/18 14:18.
  * @author Diogo Oliveira.
  */
 abstract class DBConnectionHelper<T>(val name: String, val version: Int, private val table: String = "")
@@ -26,20 +27,31 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
 
     internal abstract fun onCreate(database: SQLiteDatabase)
 
-    internal fun onConfigure(database: SQLiteDatabase) { }
+    internal fun onConfigure(database: SQLiteDatabase)
+    {
+    }
 
     internal abstract fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int)
 
-    protected fun writable(transaction: Boolean = false): SQLiteDatabase
-    {
-        return manager.writable(transaction)
-    }
-
+    /**
+     * Cria/ou abre um banco de dados que será usado para leitura.
+     */
     protected fun readable(): SQLiteDatabase
     {
         return manager.readable()
     }
 
+    /**
+     * Cria/ou abre um banco de dados que será usado para leitura e escrita.
+     */
+    protected fun writable(transaction: Boolean = false): SQLiteDatabase
+    {
+        return manager.writable(transaction)
+    }
+
+    /**
+     * Insere um objeto no banco.
+     */
     fun insert(model: T): ResultDatabase
     {
         return manager.database.use {
@@ -49,6 +61,9 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         }
     }
 
+    /**
+     * Atualiza um objeto no banco.
+     */
     fun update(model: T): ResultDatabase
     {
         return manager.database.use {
@@ -59,6 +74,9 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         }
     }
 
+    /**
+     * Deleta um objeto no banco.
+     */
     fun delete(model: T): ResultDatabase
     {
         return manager.database.use {
@@ -69,6 +87,9 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         }
     }
 
+    /**
+     * Verifica se existe um objeto no banco.
+     */
     fun contains(model: T): Boolean
     {
         return manager.database.use {
@@ -79,6 +100,9 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         }
     }
 
+    /**
+     * Busca uma coleção de objetos no banco.
+     */
     fun findAll(): HashSet<T>
     {
         return manager.database.use {
@@ -98,6 +122,9 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
      */
     protected abstract fun contentValues(model: T, insert: Boolean = false): ContentValues
 
+    /**
+     * Preenche um "Array" utilizado quando usado inserir ou atualizar dados.
+     */
     protected abstract fun contentPairs(model: T, insert: Boolean = false): Array<Pair<String, Any?>>
 
     /**

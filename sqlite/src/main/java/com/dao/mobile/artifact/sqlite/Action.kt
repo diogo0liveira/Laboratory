@@ -7,5 +7,16 @@ package com.dao.mobile.artifact.sqlite
  */
 enum class Action(val value: String)
 {
-    INSERT("INSERT"), UPDATE("UPDATE"), DELETE("DELETE");
+    /**
+     * Resultado é um insert.
+     */
+    INSERT("INSERT"),
+    /**
+     * Resultado é um update.
+     */
+    UPDATE("UPDATE"),
+    /**
+     * Resultado é um delete.
+     */
+    DELETE("DELETE");
 }

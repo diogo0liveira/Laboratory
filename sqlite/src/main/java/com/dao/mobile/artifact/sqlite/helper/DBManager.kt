@@ -14,17 +14,26 @@ object DBManager
     private lateinit var connection : DBConnectionHelper<*>
     internal val database: Database by lazy { Database(connection) }
 
+    /**
+     * Inicializa a instância de "DBManager".
+     */
     fun initialize(connection: DBConnectionHelper<*>): DBManager
     {
         DBManager.connection = connection
         return this
     }
 
+    /**
+     * Instância do banco de dados que será usado para leitura.
+     */
     fun readable(): SQLiteDatabase
     {
         return database.readableDatabase
     }
 
+    /**
+     * Instância do banco de dados que será usado para leitura e escrita.
+     */
     fun writable(transaction: Boolean = false): SQLiteDatabase
     {
         val database = database.writableDatabase

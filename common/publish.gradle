@@ -1,14 +1,14 @@
 ext {
-    bintrayName = 'sqlite-common'
+    bintrayName = 'common'
     bintrayRepository = 'android'
-    bintrayDescription = 'DBHelper para "SQLiteOpenHelper" com algumas operações comuns encapsuladas.'
+    bintrayDescription = 'Biblioteca para desenvolvimento Android mais rápido e fácil.'
 
     bintrayLicenses = ['Apache-2.0']
-    bintrayLabels = ['android', 'kotlin', 'sqlite']
+    bintrayLabels = ['android', 'kotlin']
 
     version android.defaultConfig.versionName
     group 'com.dao.mobile.artifact'
-    artifact = 'sqlite'
+    artifact = 'common'
 
     gitUrl = 'https://github.com/diogo0liveira'
     projectUrl = 'https://github.com/diogo0liveira/Laboratory'

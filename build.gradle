@@ -17,6 +17,8 @@ buildscript {
         // in the individual module build.gradle files
 
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17'
     }
 }
 
@@ -45,4 +47,7 @@ ext {
     extJunitVersion = '1.1.0'
     junitVersion = '4.13-beta-1'
     espressoCoreVersion = '3.1.1'
+
+    mockitoCoreVersion = '2.21.0'
+    mockitoAndroidVersion = '2.21.0'
 }

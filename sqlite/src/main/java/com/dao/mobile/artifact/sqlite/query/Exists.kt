@@ -6,20 +6,29 @@ import com.dao.mobile.artifact.sqlite.helper.DBManager
 import org.jetbrains.anko.db.select
 
 /**
- * Created in 23/08/18 14:39.
+ * Wrapper para operação de exists.
  *
+ * Created in 23/08/18 14:39.
  * @author Diogo Oliveira.
  */
 class Exists(private val logger: Boolean = false, private val table: String, private val manager: DBManager)
 {
     private val where: Where by lazy { Where() }
 
+    /**
+     * Clausula WHERE para a operação de exists.
+     */
     fun where(clause: Clause): Where
     {
         where.clause(clause)
         return where
     }
 
+    /**
+     * Executa a operação.
+     *
+     * @return true se existir o(s) dados no banco.
+     */
     fun exec(): Boolean
     {
         if(logger)
@@ -56,6 +65,9 @@ class Exists(private val logger: Boolean = false, private val table: String, pri
         Logger.d(TAG, query)
     }
 
+    /**
+     * Instância da clausula WHERE para a operação de delete.
+     */
     inner class Where : WhereClause()
     {
         var clause: Clause = Clause()
