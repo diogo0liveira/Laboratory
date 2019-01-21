@@ -4,7 +4,7 @@
 # Laboratory
 Utilitário para projetos Android.
 
-[![Download](https://api.bintray.com/packages/diogo0liveira/android/sqlite-common/images/download.svg?version=1.0.0) ](https://bintray.com/diogo0liveira/android/sqlite-common/1.0.0/link) ## Sqlite
+## [![Download](https://api.bintray.com/packages/diogo0liveira/android/sqlite-common/images/download.svg?version=1.0.0) ](https://bintray.com/diogo0liveira/android/sqlite-common/1.0.0/link) Sqlite
 
 DBHelper para "SQLiteOpenHelper" com algumas operações comuns encapsuladas.
 ```groovy
@@ -20,7 +20,7 @@ class UserDataSource : DBHelper<User>(TABLE_USER)
 }
 ```
 
-[![Download](https://api.bintray.com/packages/diogo0liveira/android/common/images/download.svg?version=1.0.0) ](https://bintray.com/diogo0liveira/android/common/1.0.0/link) ## Common
+## [![Download](https://api.bintray.com/packages/diogo0liveira/android/common/images/download.svg?version=1.0.0) ](https://bintray.com/diogo0liveira/android/common/1.0.0/link) Common
 
 Alguns métodos comuns para fugir de códigos clichês, tornar o desenvolvimento mais rápido e fácil.
 ```groovy
