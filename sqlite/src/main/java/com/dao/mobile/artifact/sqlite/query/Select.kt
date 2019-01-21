@@ -6,8 +6,9 @@ import com.dao.mobile.artifact.sqlite.helper.DBManager
 import org.jetbrains.anko.db.select
 
 /**
- * Created in 23/08/18 15:00.
+ * Wrapper para instruções "SELECT".
  *
+ * Created in 23/08/18 15:00.
  * @author Diogo Oliveira.
  */
 class Select(private val logger: Boolean = false, private val table: String, private val manager: DBManager)
@@ -15,17 +16,34 @@ class Select(private val logger: Boolean = false, private val table: String, pri
     private val where: Where by lazy { Where() }
     private var columns: Array<String> = arrayOf()
 
+    /**
+     * Adiciona colunas utilizada nas instrução.
+     *
+     * @param columns colunas que serão retornadas.
+     */
     fun columns(vararg columns: String)
     {
         this.columns = arrayOf(*columns)
     }
 
+    /**
+     * Clausula "where" utilizada na instrução.
+     *
+     * @param clause clausula where.
+     *
+     * @return where instância atual.
+     */
     fun where(clause: Clause): Where
     {
         this.where.clause(clause)
         return where
     }
 
+    /**
+     * Executa a instrução fornecida, retornando um {@link QueryCursor} sobre o conjunto de resultados.
+     *
+     * @return cursor instância atual.
+     */
     fun exec(): QueryCursor
     {
         if(logger)
@@ -68,6 +86,9 @@ class Select(private val logger: Boolean = false, private val table: String, pri
     }
 
 
+    /**
+     * Instância da clausula WHERE para a operação.
+     */
     inner class Where : WhereClause()
     {
         var clause: Clause = Clause()

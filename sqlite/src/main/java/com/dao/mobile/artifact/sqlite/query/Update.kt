@@ -6,20 +6,29 @@ import com.dao.mobile.artifact.sqlite.helper.DBManager
 import org.jetbrains.anko.db.update
 
 /**
- * Created in 23/08/18 15:28.
+ * Wrapper para operação de update.
  *
+ * Created in 23/08/18 15:28.
  * @author Diogo Oliveira.
  */
 class Update(private val table: String, private val manager: DBManager)
 {
     private val where: Where by lazy { Where() }
 
+    /**
+     * Clausula WHERE {@link Update.Where} para a operação de update.
+     */
     fun where(clause: Clause): Where
     {
         where.clause(clause)
         return where
     }
 
+    /**
+     * Executa a operação, retornando {@link ResultDatabase}.
+     *
+     * @return resultDatabase com o resultado da operação.
+     */
     fun exec(vararg values: Pair<String, Any?>): ResultDatabase
     {
         return manager.database.use {
@@ -29,6 +38,9 @@ class Update(private val table: String, private val manager: DBManager)
         }
     }
 
+    /**
+     * Instância da clausula WHERE para a operação de update.
+     */
     inner class Where : WhereClause()
     {
         var clause: Clause = Clause()

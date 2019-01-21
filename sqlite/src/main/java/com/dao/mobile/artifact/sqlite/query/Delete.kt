@@ -25,7 +25,7 @@ class Delete(private val table: String, private val manager: DBManager)
     }
 
     /**
-     * Executa a operação.
+     * Executa a operação, retornando {@link ResultDatabase}.
      *
      * @return resultDatabase com o resultado da operação.
      */
