@@ -4,7 +4,6 @@ package com.dao.mobile.artifact.sqlite.query
 
 import android.database.CharArrayBuffer
 import android.database.Cursor
-import android.os.Build
 import com.dao.mobile.artifact.common.numbers.isPositive
 import java.io.Closeable
 
@@ -198,10 +197,10 @@ class QueryCursor(private val cursor: Cursor) : Closeable
         return if(isNull(position)) null else cursor.getBlob(position)
     }
 
-
     fun copyStringToBuffer(index: Int, buffer: CharArrayBuffer)
     {
         cursor.copyStringToBuffer(index, buffer)
+        cursor
     }
 
     override fun close()
@@ -212,31 +211,5 @@ class QueryCursor(private val cursor: Cursor) : Closeable
     fun isClosed(): Boolean
     {
         return cursor.isClosed
-    }
-
-    inline fun <T> useCursor(cursor: QueryCursor, f: (QueryCursor) -> T): T
-    {
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-        {
-            cursor.use(f)
-        }
-        else
-        {
-            try
-            {
-                f(cursor)
-            }
-            finally
-            {
-                try
-                {
-                    cursor.close()
-                }
-                catch(e: Exception)
-                {
-                    // Do nothing
-                }
-            }
-        }
     }
 }

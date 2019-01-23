@@ -30,8 +30,8 @@ class InsertTest
         val insert = Insert("MODEL", database.manager())
         val resultDatabase = insert.exec(*values)
 
-        assertThat(resultDatabase.getCount(), `is`(equalTo(1)))
         assertThat(resultDatabase.isSuccessful(), `is`(true))
+        assertThat(resultDatabase.getCount(), equalTo(1))
         assertThat(resultDatabase.isInsert(), `is`(true))
     }
 }

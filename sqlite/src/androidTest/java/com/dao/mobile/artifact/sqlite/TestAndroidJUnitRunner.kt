@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.dao.mobile.artifact.sqlite
 
 import android.app.Application

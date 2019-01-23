@@ -3,6 +3,7 @@
 package com.dao.mobile.artifact.sqlite.helper
 
 import android.content.ContentValues
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.annotation.VisibleForTesting
 import com.dao.mobile.artifact.sqlite.Action
@@ -10,7 +11,6 @@ import com.dao.mobile.artifact.sqlite.BindValue
 import com.dao.mobile.artifact.sqlite.ResultDatabase
 import com.dao.mobile.artifact.sqlite.query.Clause
 import com.dao.mobile.artifact.sqlite.query.QueryBuilder
-import com.dao.mobile.artifact.sqlite.query.QueryCursor
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
@@ -28,9 +28,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
 
     internal abstract fun onCreate(database: SQLiteDatabase)
 
-    internal fun onConfigure(database: SQLiteDatabase)
-    {
-    }
+    internal fun onConfigure(database: SQLiteDatabase) { }
 
     internal abstract fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int)
 
@@ -200,7 +198,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
             select(table).whereArgs(clause.where(), *clause.args()).exec {
                 if((this.moveToFirst() && this.count == 1))
                 {
-                    model(QueryCursor(this))
+                    model(this)
                 }
 
                 null
@@ -217,7 +215,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
     {
         return manager.database.use {
             select(table).exec {
-                QueryCursor(this).returnToList()
+                this.returnToList()
             }
         }
     }
@@ -245,7 +243,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
     /**
      * Preenche um model com os valores de um cursor.
      */
-    protected abstract fun model(cursor: QueryCursor): T
+    protected abstract fun model(cursor: Cursor): T
 
     /**
      * Construtor de sql. @{link QueryBuilder}
@@ -255,12 +253,12 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         return QueryBuilder(table, manager)
     }
 
-    fun QueryCursor.returnToSingle(): T
+    fun Cursor.returnToSingle(): T
     {
         return model(this)
     }
 
-    fun QueryCursor.returnToList(): MutableList<T>
+    fun Cursor.returnToList(): MutableList<T>
     {
         if(this.moveToFirst())
         {

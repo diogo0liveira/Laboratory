@@ -34,8 +34,8 @@ class DeleteTest
         val delete = Delete("MODEL", database.manager())
         val resultDatabase = delete.where(Clause().equal("ID" to 1)).exec()
 
-        assertThat(resultDatabase.getCount(), `is`(equalTo(1)))
         assertThat(resultDatabase.isSuccessful(), `is`(true))
+        assertThat(resultDatabase.getCount(), equalTo(1))
         assertThat(resultDatabase.isDelete(), `is`(true))
     }
 }

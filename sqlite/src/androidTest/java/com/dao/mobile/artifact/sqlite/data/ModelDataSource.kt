@@ -1,11 +1,13 @@
 package com.dao.mobile.artifact.sqlite.data
 
 import android.content.ContentValues
+import android.database.Cursor
 import android.database.sqlite.SQLiteStatement
 import androidx.annotation.VisibleForTesting
 import com.dao.mobile.artifact.sqlite.BindValue
+import com.dao.mobile.artifact.sqlite.getInt
+import com.dao.mobile.artifact.sqlite.getString
 import com.dao.mobile.artifact.sqlite.query.Clause
-import com.dao.mobile.artifact.sqlite.query.QueryCursor
 
 /**
  * Created in 03/08/18 13:45.
@@ -17,7 +19,6 @@ class ModelDataSource : DBHelper<Model>(TABLE_MODEL)
     fun deleteAll()
     {
         writable().delete(TABLE_MODEL, null, null)
-        Clause().`in`(COLUMN_ID to arrayOf(1, 2))
     }
 
     override fun contentPairs(model: Model, insert: Boolean): Array<Pair<String, Any?>> {
@@ -42,7 +43,7 @@ class ModelDataSource : DBHelper<Model>(TABLE_MODEL)
         }
     }
 
-    override fun model(cursor: QueryCursor): Model
+    override fun model(cursor: Cursor): Model
     {
         return Model(cursor.getInt(COLUMN_ID), cursor.getString(COLUMN_NAME))
     }

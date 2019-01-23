@@ -376,19 +376,32 @@ class Clause
             where.append(predicate.value)
         }
 
-//        where.append(String.format(restriction, arg.first, arg.first))
-        where.append(String.format(restriction, arg.first, when(arg.second)
+        var values = arg.first
+        var params = mutableListOf<Pair<String, Any>>()
+
+        if(restriction == IN)
         {
-            is Array<*> ->
+            when(arg.second)
             {
-                (arg.second as Array<*>).joinToString(", ", "{", "}") { arg.first }
+                is Array<*> ->
+                {
+                    val args = (arg.second as Array<*>)
+                    values = args.map { arg.first + it }.joinToString(", ") { "{$it}" }
+                    args.forEach { params.add(arg.first.plus(it!!) to it) }
+                }
+                else ->
+                {
+                    values = "{" + arg.first + "}"
+                }
             }
-            else ->
-            {
-                arg.first
-            }
-        }))
-        args.add(arg)
+        }
+        else
+        {
+            params = mutableListOf(arg)
+        }
+
+        where.append(String.format(restriction, arg.first, values))
+        args.addAll(params)
     }
 
     /**

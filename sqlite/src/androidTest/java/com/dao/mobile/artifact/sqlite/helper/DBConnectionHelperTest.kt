@@ -1,6 +1,5 @@
 package com.dao.mobile.artifact.sqlite.helper
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.dao.mobile.artifact.sqlite.ResultDatabase
 import com.dao.mobile.artifact.sqlite.data.Model
 import com.dao.mobile.artifact.sqlite.data.ModelDataSource
@@ -9,14 +8,12 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
 /**
  * Created in 17/01/19 10:46.
  *
  * @author Diogo Oliveira.
  */
-@RunWith(AndroidJUnit4::class)
 class DBConnectionHelperTest
 {
     private lateinit var database: ModelDataSource
@@ -41,7 +38,7 @@ class DBConnectionHelperTest
     }
 
     @Test
-    fun `insert collection`()
+    fun insertCollection()
     {
         val result: ResultDatabase = database.insert(listOf(model))
         assertThat(true, `is`(result.isSuccessful()))
@@ -63,7 +60,7 @@ class DBConnectionHelperTest
     }
 
     @Test
-    fun `update collection`()
+    fun updateCollection()
     {
         database.insert(model)
 
@@ -86,7 +83,7 @@ class DBConnectionHelperTest
     }
 
     @Test
-    fun `delete collection`()
+    fun deleteCollection()
     {
         database.insert(model)
 
@@ -100,32 +97,32 @@ class DBConnectionHelperTest
     fun contains()
     {
         database.insert(model)
-        assertThat(true, `is`(equalTo(database.contains(model))))
+        assertThat(true, `is`(database.contains(model)))
     }
 
     @Test
     fun find()
     {
         database.insert(model)
-        assertThat(model, `is`(equalTo(database.find(model))))
+        assertThat(model, equalTo(database.find(model)))
     }
 
     @Test
     fun findAll()
     {
         database.insert(model)
-        assertThat(listOf(model), `is`(equalTo(database.findAll().toList())))
+        assertThat(listOf(model), equalTo(database.findAll().toList()))
     }
 
     @Test
     fun getName()
     {
-        assertThat("ModelTest.db", `is`(equalTo(database.name)))
+        assertThat("ModelTest.db", equalTo(database.name))
     }
 
     @Test
     fun getVersion()
     {
-        assertThat(1, `is`(equalTo(database.version)))
+        assertThat(1, equalTo(database.version))
     }
 }

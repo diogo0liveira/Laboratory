@@ -36,8 +36,8 @@ class UpdateTest
         val clause = Clause().equal("ID" to 1)
         val resultDatabase = update.where(clause).exec(*values)
 
-        assertThat(resultDatabase.getCount(), `is`(equalTo(1)))
         assertThat(resultDatabase.isSuccessful(), `is`(true))
+        assertThat(resultDatabase.getCount(), equalTo(1))
         assertThat(resultDatabase.isUpdate(), `is`(true))
     }
 }

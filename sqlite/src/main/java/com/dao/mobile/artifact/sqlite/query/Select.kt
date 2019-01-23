@@ -3,9 +3,10 @@ package com.dao.mobile.artifact.sqlite.query
 import android.database.Cursor
 import android.database.sqlite.SQLiteQueryBuilder
 import android.util.Log.d
+import com.dao.mobile.artifact.common.numbers.isPositive
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import org.jetbrains.anko.db.SelectQueryBuilder
 import org.jetbrains.anko.db.select
-import org.jetbrains.anko.internals.AnkoInternals
 
 /**
  * Wrapper para instruções "SELECT".
@@ -23,9 +24,10 @@ class Select internal constructor(private val logger: Boolean = false, private v
      *
      * @param columns colunas que serão retornadas.
      */
-    fun columns(vararg columns: String)
+    fun columns(vararg columns: String): Select
     {
         this.columns = arrayOf(*columns)
+        return this
     }
 
     /**
@@ -46,7 +48,7 @@ class Select internal constructor(private val logger: Boolean = false, private v
      *
      * @return cursor instância atual.
      */
-    fun exec(): QueryCursor
+    fun <T> exec(block: (model: Cursor) -> T): Cursor
     {
         if(logger)
         {
@@ -54,22 +56,42 @@ class Select internal constructor(private val logger: Boolean = false, private v
         }
 
       return  manager.database.use {
-            select(table)
-                    .columns(*columns)
-                    .whereArgs(where.clause.where(), *where.clause.args())
-                    .groupBy(where.group)
-                    .having(where.having)
-                    .groupBy(where.sort)
-                    .limit(where.limit)
-                    .exec { QueryCursor(this) }
-        }
-    }
+          val builder: SelectQueryBuilder = select(table)
 
-    fun <T> exec(f: QueryCursor.() -> T): T
-    {
-        val cursor = exec()
-        return cursor.use {
-            cursor.f()
+          if(columns.isNotEmpty())
+          {
+              builder.columns(*columns)
+          }
+
+          if(where.clause.args().isNotEmpty())
+          {
+              builder.whereArgs(where.clause.where(), *where.clause.args())
+          }
+
+          if(where.group.isNotEmpty())
+          {
+              builder.groupBy(where.group)
+          }
+
+          if(where.having.isNotEmpty())
+          {
+              builder.having(where.having)
+          }
+
+          if(where.sort.isNotEmpty())
+          {
+              builder.orderBy(where.sort)
+          }
+
+          if(where.limit.isPositive())
+          {
+              builder.limit(where.limit)
+          }
+
+          builder.exec {
+              this
+
+          }
         }
     }
 
@@ -116,7 +138,7 @@ class Select internal constructor(private val logger: Boolean = false, private v
             this.clause = clause
         }
 
-        fun exec(): QueryCursor
+        fun exec(): Cursor
         {
             return this@Select.exec()
         }
