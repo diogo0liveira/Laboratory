@@ -1,9 +1,11 @@
 package com.dao.mobile.artifact.sqlite.query
 
+import android.database.Cursor
 import android.database.sqlite.SQLiteQueryBuilder
 import android.util.Log.d
 import com.dao.mobile.artifact.sqlite.helper.DBManager
 import org.jetbrains.anko.db.select
+import org.jetbrains.anko.internals.AnkoInternals
 
 /**
  * Wrapper para instruções "SELECT".
@@ -11,7 +13,7 @@ import org.jetbrains.anko.db.select
  * Created in 23/08/18 15:00.
  * @author Diogo Oliveira.
  */
-class Select(private val logger: Boolean = false, private val table: String, private val manager: DBManager)
+class Select internal constructor(private val logger: Boolean = false, private val table: String, private val manager: DBManager)
 {
     private val where: Where by lazy { Where() }
     private var columns: Array<String> = arrayOf()
@@ -63,6 +65,14 @@ class Select(private val logger: Boolean = false, private val table: String, pri
         }
     }
 
+    fun <T> exec(f: QueryCursor.() -> T): T
+    {
+        val cursor = exec()
+        return cursor.use {
+            cursor.f()
+        }
+    }
+
     private fun printLogging()
     {
         val query = SQLiteQueryBuilder.buildQueryString(
@@ -84,7 +94,6 @@ class Select(private val logger: Boolean = false, private val table: String, pri
 
         d(TAG, query)
     }
-
 
     /**
      * Instância da clausula WHERE para a operação.

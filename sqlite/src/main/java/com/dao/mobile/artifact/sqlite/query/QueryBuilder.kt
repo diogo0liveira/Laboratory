@@ -10,7 +10,7 @@ import com.dao.mobile.artifact.sqlite.helper.DBManager
  * Created in 23/08/18 15:36.
  * @author Diogo Oliveira.
  */
-class QueryBuilder(private val table: String, private val manager: DBManager)
+class QueryBuilder internal constructor(private val table: String, private val manager: DBManager)
 {
     constructor(join: Join, manager: DBManager) : this(join.build(), manager)
 

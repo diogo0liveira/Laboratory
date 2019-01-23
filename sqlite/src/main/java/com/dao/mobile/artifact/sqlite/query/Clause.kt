@@ -24,6 +24,34 @@ class Clause
     }
 
     /**
+     * Constroi a clausula COLUMN IN(PARAM...).
+     *
+     * @param arg coluna/parametro.
+     *
+     * @return clause atual.
+     */
+    fun `in`(arg: Pair<String, Any>): Clause
+    {
+        `in`(Predicate.AND, arg)
+        return this
+    }
+
+    /**
+     * Constroi a clausula COLUMN IN(PARAM...).
+     *
+     * @param predicate AND/OR
+     * @param arg coluna/parametro.
+     *
+     * @return clause atual.
+     */
+    fun `in`(predicate: Predicate, arg: Pair<String, Any>): Clause
+    {
+        build(predicate, IN, arg)
+        return this
+    }
+
+
+    /**
      * Constroi a clausula (COLUMN = PARAM).
      *
      * @param arg coluna/parametro.
@@ -348,7 +376,18 @@ class Clause
             where.append(predicate.value)
         }
 
-        where.append(String.format(restriction, arg.first, arg.first))
+//        where.append(String.format(restriction, arg.first, arg.first))
+        where.append(String.format(restriction, arg.first, when(arg.second)
+        {
+            is Array<*> ->
+            {
+                (arg.second as Array<*>).joinToString(", ", "{", "}") { arg.first }
+            }
+            else ->
+            {
+                arg.first
+            }
+        }))
         args.add(arg)
     }
 

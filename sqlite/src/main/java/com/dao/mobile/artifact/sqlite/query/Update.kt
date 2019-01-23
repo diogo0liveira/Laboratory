@@ -11,7 +11,7 @@ import org.jetbrains.anko.db.update
  * Created in 23/08/18 15:28.
  * @author Diogo Oliveira.
  */
-class Update(private val table: String, private val manager: DBManager)
+class Update internal constructor(private val table: String, private val manager: DBManager)
 {
     private val where: Where by lazy { Where() }
 

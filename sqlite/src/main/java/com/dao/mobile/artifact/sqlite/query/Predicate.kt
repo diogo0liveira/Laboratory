@@ -8,6 +8,7 @@ package com.dao.mobile.artifact.sqlite.query
 internal const val TAG = "QUERY-BUILDER"
 
 internal const val SPACE = "\u0020"
+internal const val IN = " %s IN(%s)"
 internal const val EQUAL = " %s = {%s}"
 internal const val DIFFERENT = " %s != {%s}"
 internal const val TRIM_DIFF_PARAM = " TRIM(%s) != TRIM({%s})"

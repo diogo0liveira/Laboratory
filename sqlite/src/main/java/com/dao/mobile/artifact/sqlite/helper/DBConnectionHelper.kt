@@ -9,11 +9,12 @@ import com.dao.mobile.artifact.sqlite.Action
 import com.dao.mobile.artifact.sqlite.BindValue
 import com.dao.mobile.artifact.sqlite.ResultDatabase
 import com.dao.mobile.artifact.sqlite.query.Clause
+import com.dao.mobile.artifact.sqlite.query.QueryBuilder
 import com.dao.mobile.artifact.sqlite.query.QueryCursor
 import org.jetbrains.anko.db.delete
+import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
-import java.util.*
 
 /**
  * Estabelece uma conexão com o banco.
@@ -51,18 +52,47 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
 
     /**
      * Insere um objeto no banco.
+     *
+     * @return resultDatabase com o resultado da operação.
      */
     fun insert(model: T): ResultDatabase
     {
         return manager.database.use {
             val result = ResultDatabase(Action.INSERT)
-            result.forInsert(insert(table, null, contentValues(model, true)))
+            result.forInsert(insert(table, *contentPairs(model, true)))
+            result
+        }
+    }
+
+    /**
+     * Insere uma lista de objetos no banco ou cancela a operação em caso de erro.
+     *
+     * @return resultDatabase com o resultado da operação.
+     */
+    fun insert(models: List<T>): ResultDatabase
+    {
+        return manager.database.use {
+            val result = ResultDatabase(Action.INSERT)
+            beginTransaction()
+
+            models.takeWhile { !result.isSuccessful() }.forEach {
+                result.forStmInsert(insert(table, *contentPairs(it, true)))
+            }
+
+            if(result.isSuccessful())
+            {
+                setTransactionSuccessful()
+            }
+
+            endTransaction()
             result
         }
     }
 
     /**
      * Atualiza um objeto no banco.
+     *
+     * @return resultDatabase com o resultado da operação.
      */
     fun update(model: T): ResultDatabase
     {
@@ -75,7 +105,36 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
     }
 
     /**
+     * Atualiza uma lista de objetos no banco ou cancela a operação em caso de erro.
+     *
+     * @return resultDatabase com o resultado da operação.
+     */
+    fun update(models: List<T>): ResultDatabase
+    {
+        return manager.database.use {
+            val result = ResultDatabase(Action.UPDATE)
+            beginTransaction()
+
+            models.takeWhile { !result.isSuccessful() }.forEach {
+                val clause = constraints(it)
+                result.forStmUpdate(update(table, *contentPairs(it)).whereArgs(clause.where(), *clause.args()).exec())
+            }
+
+            if(result.isSuccessful())
+            {
+                setTransactionSuccessful()
+            }
+
+            endTransaction()
+
+            result
+        }
+    }
+
+    /**
      * Deleta um objeto no banco.
+     *
+     * @return resultDatabase com o resultado da operação.
      */
     fun delete(model: T): ResultDatabase
     {
@@ -88,7 +147,36 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
     }
 
     /**
+     * Deleta uma lista de objetos no banco ou cancela a operação em caso de erro.
+     *
+     * @return resultDatabase com o resultado da operação.
+     */
+    fun delete(models: List<T>): ResultDatabase
+    {
+        return manager.database.use {
+            val result = ResultDatabase(Action.DELETE)
+            beginTransaction()
+
+            models.takeWhile { !result.isSuccessful() }.forEach {
+                val clause = constraints(it)
+                result.forStmDelete(delete(table, clause.where(), *clause.args()))
+            }
+
+            if(result.isSuccessful())
+            {
+                setTransactionSuccessful()
+            }
+
+            endTransaction()
+
+            result
+        }
+    }
+
+    /**
      * Verifica se existe um objeto no banco.
+     *
+     * @return resultDatabase com o resultado da operação.
      */
     fun contains(model: T): Boolean
     {
@@ -101,13 +189,35 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
     }
 
     /**
-     * Busca uma coleção de objetos no banco.
+     * Busca o respectivo objeto no banco.
+     *
+     * @return model resultado da operação.
      */
-    fun findAll(): HashSet<T>
+    fun find(model: T): T?
+    {
+        return manager.database.use {
+            val clause = constraints(model)
+            select(table).whereArgs(clause.where(), *clause.args()).exec {
+                if((this.moveToFirst() && this.count == 1))
+                {
+                    model(QueryCursor(this))
+                }
+
+                null
+            }
+        }
+    }
+
+    /**
+     * Busca uma coleção de objetos no banco.
+     *
+     * @return mutableList com o resultado da operação.
+     */
+    fun findAll(): MutableList<T>
     {
         return manager.database.use {
             select(table).exec {
-                resultList(QueryCursor(this))
+                QueryCursor(this).returnToList()
             }
         }
     }
@@ -137,22 +247,35 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
      */
     protected abstract fun model(cursor: QueryCursor): T
 
-    private fun resultList(cursor: QueryCursor): HashSet<T>
+    /**
+     * Construtor de sql. @{link QueryBuilder}
+     */
+    protected fun queryBuilder(): QueryBuilder
     {
-        if(cursor.moveToFirst())
+        return QueryBuilder(table, manager)
+    }
+
+    fun QueryCursor.returnToSingle(): T
+    {
+        return model(this)
+    }
+
+    fun QueryCursor.returnToList(): MutableList<T>
+    {
+        if(this.moveToFirst())
         {
-            val hashSet = HashSet<T>(cursor.getCount())
+            val list = mutableListOf<T>()
 
             do
             {
-                hashSet.add(model(cursor))
+                list.add(model(this))
 
-            } while(cursor.moveToNext())
+            } while(this.moveToNext())
 
-            return hashSet
+            return list
         }
 
-        return hashSetOf()
+        return mutableListOf()
     }
 
     @VisibleForTesting

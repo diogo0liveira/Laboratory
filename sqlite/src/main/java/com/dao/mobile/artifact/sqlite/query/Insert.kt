@@ -11,7 +11,7 @@ import org.jetbrains.anko.db.insert
  * Created in 23/08/18 14:53.
  * @author Diogo Oliveira.
  */
-class Insert(private val table: String, private val manager: DBManager)
+class Insert internal constructor(private val table: String, private val manager: DBManager)
 {
     /**
      * Executa a operação, retornando {@link ResultDatabase}.

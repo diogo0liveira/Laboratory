@@ -11,7 +11,7 @@ import org.jetbrains.anko.db.select
  * Created in 23/08/18 14:39.
  * @author Diogo Oliveira.
  */
-class Exists(private val logger: Boolean = false, private val table: String, private val manager: DBManager)
+class Exists internal constructor(private val logger: Boolean = false, private val table: String, private val manager: DBManager)
 {
     private val where: Where by lazy { Where() }
 

@@ -17,6 +17,7 @@ class ModelDataSource : DBHelper<Model>(TABLE_MODEL)
     fun deleteAll()
     {
         writable().delete(TABLE_MODEL, null, null)
+        Clause().`in`(COLUMN_ID to arrayOf(1, 2))
     }
 
     override fun contentPairs(model: Model, insert: Boolean): Array<Pair<String, Any?>> {

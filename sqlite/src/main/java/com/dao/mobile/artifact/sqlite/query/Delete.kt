@@ -11,7 +11,7 @@ import org.jetbrains.anko.db.delete
  * Created in 23/08/18 13:54.
  * @author Diogo Oliveira.
  */
-class Delete(private val table: String, private val manager: DBManager)
+class Delete internal constructor(private val table: String, private val manager: DBManager)
 {
     private val where: Where by lazy { Where() }
 
