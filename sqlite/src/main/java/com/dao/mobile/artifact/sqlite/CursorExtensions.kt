@@ -2,6 +2,7 @@ package com.dao.mobile.artifact.sqlite
 
 import android.database.CharArrayBuffer
 import android.database.Cursor
+import androidx.core.database.*
 import com.dao.mobile.artifact.common.numbers.isPositive
 
 /**
@@ -16,7 +17,7 @@ import com.dao.mobile.artifact.common.numbers.isPositive
  */
 infix fun Cursor.hasColumn(column: String): Boolean
 {
-    return this.getColumnIndex(column).isPositive()
+    return getColumnIndex(column).isPositive()
 }
 
 /**
@@ -26,7 +27,27 @@ infix fun Cursor.hasColumn(column: String): Boolean
  */
 infix fun Cursor.getString(column: String): String
 {
-    return this.getString(this.getColumnIndex(column))
+    return getString(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como uma String anulável.
+ *
+ * @param column nome
+ */
+infix fun Cursor.getStringOrNull(column: String): String?
+{
+    return getStringOrNull(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como uma String ou valor default em caso de nulo.
+ *
+ * @param column nome
+ */
+fun Cursor.getTryString(column: String, default: String): String
+{
+    return getStringOrNull(column)?.let { default }!!
 }
 
 /**
@@ -36,7 +57,27 @@ infix fun Cursor.getString(column: String): String
  */
 infix fun Cursor.getShort(column: String): Short
 {
-    return this.getShort(this.getColumnIndex(column))
+    return getShort(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Short ou valor default em caso de nulo.
+ *
+ * @param column nome
+ */
+fun Cursor.getTryShort(column: String, default: Short): Short
+{
+    return getShortOrNull(column)?.let { default }!!
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Short anulável.
+ *
+ * @param column nome
+ */
+infix fun Cursor.getShortOrNull(column: String): Short?
+{
+    return getShortOrNull(getColumnIndex(column))
 }
 
 /**
@@ -46,7 +87,27 @@ infix fun Cursor.getShort(column: String): Short
  */
 infix fun Cursor.getInt(column: String): Int
 {
-    return this.getInt(this.getColumnIndex(column))
+    return getInt(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Int anulável.
+ *
+ * @param column nome
+ */
+infix fun Cursor.getIntOrNull(column: String): Int?
+{
+    return getIntOrNull(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Int ou valor default em caso de nulo.
+ *
+ * @param column nome
+ */
+fun Cursor.getTryInt(column: String, default: Int): Int
+{
+    return getIntOrNull(column)?.let { default }!!
 }
 
 /**
@@ -56,7 +117,27 @@ infix fun Cursor.getInt(column: String): Int
  */
 infix fun Cursor.getLong(column: String): Long
 {
-    return this.getLong(this.getColumnIndex(column))
+    return getLong(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Long anulável.
+ *
+ * @param column nome
+ */
+infix fun Cursor.getLongOrNull(column: String): Long?
+{
+    return getLongOrNull(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Long ou valor default em caso de nulo.
+ *
+ * @param column nome
+ */
+fun Cursor.getTryLong(column: String, default: Long): Long
+{
+    return getLongOrNull(column)?.let { default }!!
 }
 
 /**
@@ -66,7 +147,27 @@ infix fun Cursor.getLong(column: String): Long
  */
 infix fun Cursor.getFloat(column: String): Float
 {
-    return this.getFloat(this.getColumnIndex(column))
+    return getFloat(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Float anulável.
+ *
+ * @param column nome
+ */
+infix fun Cursor.getFloatOrNull(column: String): Float?
+{
+    return getFloatOrNull(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Float ou valor default em caso de nulo.
+ *
+ * @param column nome
+ */
+fun Cursor.getTryFloat(column: String, default: Float): Float
+{
+    return getFloatOrNull(getColumnIndex(column))?.let { default }!!
 }
 
 /**
@@ -76,7 +177,27 @@ infix fun Cursor.getFloat(column: String): Float
  */
 infix fun Cursor.getDouble(column: String): Double
 {
-    return this.getDouble(this.getColumnIndex(column))
+    return getDouble(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Double anulável.
+ *
+ * @param column nome
+ */
+infix fun Cursor.getDoubleOrNull(column: String): Double?
+{
+    return getDoubleOrNull(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um Double ou valor default em caso de nulo.
+ *
+ * @param column nome
+ */
+fun Cursor.getTryDouble(column: String, default: Double): Double
+{
+    return getDoubleOrNull(column)?.let { default }!!
 }
 
 /**
@@ -86,7 +207,27 @@ infix fun Cursor.getDouble(column: String): Double
  */
 infix fun Cursor.getBlob(column: String): ByteArray
 {
-    return this.getBlob(this.getColumnIndex(column))
+    return getBlob(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um ByteArray anulável.
+ *
+ * @param column nome
+ */
+infix fun Cursor.getBlobOrNull(column: String): ByteArray?
+{
+    return getBlobOrNull(getColumnIndex(column))
+}
+
+/**
+ * Retorna o valor da coluna solicitada como um ByteArray ou valor default em caso de nulo.
+ *
+ * @param column nome
+ */
+fun Cursor.getTryBlob(column: String, default: ByteArray): ByteArray
+{
+    return getBlobOrNull(column)?.let { default }!!
 }
 
 /**
@@ -96,7 +237,7 @@ infix fun Cursor.getBlob(column: String): ByteArray
  */
 infix fun Cursor.isNull(column: String): Boolean
 {
-    return this.isNull(this.getColumnIndex(column))
+    return isNull(getColumnIndex(column))
 }
 
 /**
@@ -119,49 +260,12 @@ infix fun Cursor.getType(column: String): Int
     return this.getType(this.getColumnIndex(column))
 }
 
-infix fun Cursor.getTryString(column: String): String?
+/**
+ * Recupera o texto da coluna solicitado e armazena-o no buffer fornecido.
+ *
+ * @param column nome
+ */
+fun Cursor.copyStringToBuffer(column: String, buffer: CharArrayBuffer)
 {
-    val position = this.getColumnIndex(column)
-    return if(isNull(position)) null else this.getString(position)
-}
-
-infix fun Cursor.getTryShort(column: String): Short?
-{
-    val position = this.getColumnIndex(column)
-    return if(isNull(position)) null else this.getShort(position)
-}
-
-infix fun Cursor.getTryInt(column: String): Int?
-{
-    val position = this.getColumnIndex(column)
-    return if(isNull(position)) null else this.getInt(position)
-}
-
-infix fun Cursor.getTryLong(column: String): Long?
-{
-    val position = this.getColumnIndex(column)
-    return if(isNull(position)) null else this.getLong(position)
-}
-
-infix fun Cursor.getTryFloat(column: String): Float?
-{
-    val position = this.getColumnIndex(column)
-    return if(isNull(position)) null else this.getFloat(position)
-}
-
-infix fun Cursor.getTryDouble(column: String): Double?
-{
-    val position = this.getColumnIndex(column)
-    return if(isNull(position)) null else this.getDouble(position)
-}
-
-infix fun Cursor.getTryBlob(column: String): ByteArray?
-{
-    val position = this.getColumnIndex(column)
-    return if(isNull(position)) null else this.getBlob(position)
-}
-
-fun Cursor.copyStringToBuffer(index: Int, buffer: CharArrayBuffer)
-{
-    this.copyStringToBuffer(index, buffer)
+    copyStringToBuffer(getColumnIndex(column), buffer)
 }

@@ -37,7 +37,7 @@ class Select internal constructor(private val logger: Boolean = false, private v
      *
      * @return where instância atual.
      */
-    fun where(clause: Clause): Where
+    infix fun where(clause: Clause): Where
     {
         this.where.clause(clause)
         return where
@@ -48,64 +48,53 @@ class Select internal constructor(private val logger: Boolean = false, private v
      *
      * @return cursor instância atual.
      */
-    fun exec(): Cursor
+    infix fun <T> exec(block: (cursor: Cursor) -> T)
     {
         if(logger)
         {
             printLogging()
         }
 
-      return  manager.database.use {
-          val builder: SelectQueryBuilder = select(table)
+        return manager.database.use {
+            val builder: SelectQueryBuilder = select(table)
 
-          if(columns.isNotEmpty())
-          {
-              builder.columns(*columns)
-          }
+            if(columns.isNotEmpty())
+            {
+                builder.columns(*columns)
+            }
 
-          if(where.clause.args().isNotEmpty())
-          {
-              builder.whereArgs(where.clause.where(), *where.clause.args())
-          }
+            if(where.clause.args().isNotEmpty())
+            {
+                builder.whereArgs(where.clause.where(), *where.clause.args())
+            }
 
-          if(where.group.isNotEmpty())
-          {
-              builder.groupBy(where.group)
-          }
+            if(where.group.isNotEmpty())
+            {
+                builder.groupBy(where.group)
+            }
 
-          if(where.having.isNotEmpty())
-          {
-              builder.having(where.having)
-          }
+            if(where.having.isNotEmpty())
+            {
+                builder.having(where.having)
+            }
 
-          if(where.sort.isNotEmpty())
-          {
-              builder.orderBy(where.sort)
-          }
+            if(where.sort.isNotEmpty())
+            {
+                builder.orderBy(where.sort)
+            }
 
-          if(where.limit.isPositive())
-          {
-              builder.limit(where.limit)
-          }
+            if(where.limit.isPositive())
+            {
+                builder.limit(where.limit)
+            }
 
-          builder.exec {
-              this
-
-          }
+            builder.exec { block(this) }
         }
     }
 
     private fun printLogging()
     {
-        val query = SQLiteQueryBuilder.buildQueryString(
-                false,
-                table,
-                columns,
-                where.clause.where(),
-                where.group,
-                where.having,
-                where.sort,
-                where.limit.toString())
+        val query = SQLiteQueryBuilder.buildQueryString(false, table, columns, where.clause.where(), where.group, where.having, where.sort, where.limit.toString())
 
         if(where.clause.args().isNotEmpty())
         {
@@ -138,30 +127,30 @@ class Select internal constructor(private val logger: Boolean = false, private v
             this.clause = clause
         }
 
-        fun exec(): Cursor
+        infix fun <T> exec(block: (cursor: Cursor) -> T)
         {
-            return this@Select.exec()
+            return this@Select.exec(block)
         }
 
-        fun groupBy(group: String): Where
+        infix fun groupBy(group: String): Where
         {
             this.group = group
             return this
         }
 
-        fun having(having: String): Where
+        infix fun having(having: String): Where
         {
             this.having = having
             return this
         }
 
-        fun sort(sort: String): Where
+        infix fun sort(sort: String): Where
         {
             this.sort = sort
             return this
         }
 
-        fun limit(limit: Int): Where
+        infix fun limit(limit: Int): Where
         {
             this.limit = limit
             return this

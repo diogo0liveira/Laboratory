@@ -19,4 +19,9 @@ class AppController: Application()
             SQLiteStudioService.instance().start(this)
         }
     }
+
+    override fun onTerminate() {
+        SQLiteStudioService.instance().stop()
+        super.onTerminate()
+    }
 }

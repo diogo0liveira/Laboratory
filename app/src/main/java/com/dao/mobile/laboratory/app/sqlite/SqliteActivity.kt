@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.dao.mobile.laboratory.app.R
-import com.dao.mobile.laboratory.app.sqlite.data.UserDataSource
 import kotlinx.android.synthetic.main.activity_sqlite.*
 
 /**

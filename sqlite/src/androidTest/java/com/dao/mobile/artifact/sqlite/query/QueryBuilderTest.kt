@@ -4,6 +4,7 @@ import com.dao.mobile.artifact.sqlite.data.Model
 import com.dao.mobile.artifact.sqlite.data.ModelDataSource
 import com.dao.mobile.artifact.sqlite.getInt
 import com.dao.mobile.artifact.sqlite.getString
+import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -34,21 +35,8 @@ class QueryBuilderTest
     fun select()
     {
         database.insert(model)
-//        val cursor = query.select("ID", "NAME").exec {
-//
-//        }
-//
-//        assertThat(cursor.getString("NAME"), equalTo("TEST"))
-//        assertThat(cursor.getInt("ID"), equalTo(1))
-//
-//        assertThat(cursor.getColumnName(2), equalTo("NAME"))
-//        assertThat(cursor.getColumnName(1), equalTo("ID"))
-//
-//        assertThat(cursor.columnCount, equalTo(2))
-//        assertThat(cursor.count, equalTo(1))
-//        cursor.close()
-
-        query.select("ID", "NAME").exec {
+        query.select("ID", "NAME") exec {
+            assertThat(it.moveToNext(), `is`(true))
             assertThat(it.getString("NAME"), equalTo("TEST"))
             assertThat(it.getInt("ID"), equalTo(1))
 
@@ -60,46 +48,46 @@ class QueryBuilderTest
         }
     }
 
-//    @Test
-//    fun exists()
-//    {
-//        database.insert(model)
-//        val clause = Clause().equal("ID" to 1)
-//        assertThat(query.exists().where(clause).exec(), `is`(true))
-//    }
-//
-//    @Test
-//    fun insert()
-//    {
-//        val values = arrayOf("ID" to 1, "NAME" to "TEST")
-//        val resultDatabase = query.insert().exec(*values)
-//
-//        assertThat(resultDatabase.isSuccessful(), `is`(true))
-//        assertThat(resultDatabase.getCount(), equalTo(1))
-//        assertThat(resultDatabase.isInsert(), `is`(true))
-//    }
-//
-//    @Test
-//    fun update()
-//    {
-//        database.insert(model)
-//        val values = arrayOf("ID" to 1, "NAME" to "TEST")
-//        val resultDatabase = query.update().where(Clause().equal("ID" to 1)).exec(*values)
-//
-//        assertThat(resultDatabase.isSuccessful(), `is`(true))
-//        assertThat(resultDatabase.getCount(), equalTo(1))
-//        assertThat(resultDatabase.isUpdate(), `is`(true))
-//    }
-//
-//    @Test
-//    fun delete()
-//    {
-//        database.insert(model)
-//        val clause = Clause().equal("ID" to 1)
-//        val resultDatabase = query.delete().where(clause).exec()
-//
-//        assertThat(resultDatabase.isSuccessful(), `is`(true))
-//        assertThat(resultDatabase.getCount(), equalTo(1))
-//        assertThat(resultDatabase.isDelete(), `is`(true))
-//    }
+    @Test
+    fun exists()
+    {
+        database.insert(model)
+        val clause = Clause().equal("ID" to 1)
+        assertThat(query.exists().where(clause).exec(), `is`(true))
+    }
+
+    @Test
+    fun insert()
+    {
+        val values = arrayOf("ID" to 1, "NAME" to "TEST")
+        val resultDatabase = query.insert().exec(*values)
+
+        assertThat(resultDatabase.isSuccessful(), `is`(true))
+        assertThat(resultDatabase.getCount(), equalTo(1))
+        assertThat(resultDatabase.isInsert(), `is`(true))
+    }
+
+    @Test
+    fun update()
+    {
+        database.insert(model)
+        val values = arrayOf("ID" to 1, "NAME" to "TEST")
+        val resultDatabase = query.update().where(Clause().equal("ID" to 1)).exec(*values)
+
+        assertThat(resultDatabase.isSuccessful(), `is`(true))
+        assertThat(resultDatabase.getCount(), equalTo(1))
+        assertThat(resultDatabase.isUpdate(), `is`(true))
+    }
+
+    @Test
+    fun delete()
+    {
+        database.insert(model)
+        val clause = Clause().equal("ID" to 1)
+        val resultDatabase = query.delete().where(clause).exec()
+
+        assertThat(resultDatabase.isSuccessful(), `is`(true))
+        assertThat(resultDatabase.getCount(), equalTo(1))
+        assertThat(resultDatabase.isDelete(), `is`(true))
+    }
 }
