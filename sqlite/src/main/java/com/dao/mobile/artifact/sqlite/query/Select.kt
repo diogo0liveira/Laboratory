@@ -1,10 +1,10 @@
 package com.dao.mobile.artifact.sqlite.query
 
 import android.database.Cursor
-import android.database.sqlite.SQLiteQueryBuilder
-import android.util.Log.d
 import com.dao.mobile.artifact.common.numbers.isPositive
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import com.dao.mobile.artifact.sqlite.query.internal.QueryBase
+import com.dao.mobile.artifact.sqlite.query.internal.WhereBase
 import org.jetbrains.anko.db.SelectQueryBuilder
 import org.jetbrains.anko.db.select
 
@@ -14,7 +14,10 @@ import org.jetbrains.anko.db.select
  * Created in 23/08/18 15:00.
  * @author Diogo Oliveira.
  */
-class Select internal constructor(private val logger: Boolean = false, private val table: String, private val manager: DBManager)
+class Select internal constructor(
+        logger: Boolean = false,
+        private val table: String,
+        private val manager: DBManager) : QueryBase(logger, table), SelectWhere
 {
     private val where: Where by lazy { Where() }
     private var columns: Array<String> = arrayOf()
@@ -37,10 +40,34 @@ class Select internal constructor(private val logger: Boolean = false, private v
      *
      * @return where instância atual.
      */
-    infix fun where(clause: Clause): Where
+    infix fun where(clause: Clause): SelectWhere
     {
-        this.where.clause(clause)
+        this.where.setClause(clause)
         return where
+    }
+
+    override fun groupBy(group: String): SelectWhere
+    {
+        where.group = group
+        return this
+    }
+
+    override fun having(having: String): SelectWhere
+    {
+        where.having = having
+        return this
+    }
+
+    override fun sort(sort: String): SelectWhere
+    {
+        where.sort = sort
+        return this
+    }
+
+    override fun limit(limit: Int): SelectWhere
+    {
+        where.limit = limit
+        return this
     }
 
     /**
@@ -48,12 +75,9 @@ class Select internal constructor(private val logger: Boolean = false, private v
      *
      * @return cursor instância atual.
      */
-    infix fun <T> exec(block: (cursor: Cursor) -> T)
+    override fun <T> exec(block: (cursor: Cursor) -> T)
     {
-        if(logger)
-        {
-            printLogging()
-        }
+        printLogging(columns, where)
 
         return manager.database.use {
             val builder: SelectQueryBuilder = select(table)
@@ -63,9 +87,9 @@ class Select internal constructor(private val logger: Boolean = false, private v
                 builder.columns(*columns)
             }
 
-            if(where.clause.args().isNotEmpty())
+            if(where.getClauseArgs().isNotEmpty())
             {
-                builder.whereArgs(where.clause.where(), *where.clause.args())
+                builder.whereArgs(where.getClause(), *where.getClauseArgs())
             }
 
             if(where.group.isNotEmpty())
@@ -92,65 +116,35 @@ class Select internal constructor(private val logger: Boolean = false, private v
         }
     }
 
-    private fun printLogging()
-    {
-        val query = SQLiteQueryBuilder.buildQueryString(false, table, columns, where.clause.where(), where.group, where.having, where.sort, where.limit.toString())
-
-        if(where.clause.args().isNotEmpty())
-        {
-            where.clause.args().forEach {
-                query.replaceFirst("\\?", it.second.toString())
-            }
-        }
-
-        d(TAG, query)
-    }
-
     /**
      * Instância da clausula WHERE para a operação.
      */
-    inner class Where : WhereClause()
+    internal inner class Where : WhereBase(), SelectWhere
     {
-        var clause: Clause = Clause()
-        var having: String = ""
-        var group: String = ""
-        var sort: String = ""
-        var limit: Int = -1
-
-        override fun clause(): Clause
-        {
-            return clause
-        }
-
-        override fun clause(clause: Clause)
-        {
-            this.clause = clause
-        }
-
-        infix fun <T> exec(block: (cursor: Cursor) -> T)
+        override fun <T> exec(block: (cursor: Cursor) -> T)
         {
             return this@Select.exec(block)
         }
 
-        infix fun groupBy(group: String): Where
+        override fun groupBy(group: String): SelectWhere
         {
             this.group = group
             return this
         }
 
-        infix fun having(having: String): Where
+        override fun having(having: String): SelectWhere
         {
             this.having = having
             return this
         }
 
-        infix fun sort(sort: String): Where
+        override fun sort(sort: String): SelectWhere
         {
             this.sort = sort
             return this
         }
 
-        infix fun limit(limit: Int): Where
+        override fun limit(limit: Int): SelectWhere
         {
             this.limit = limit
             return this

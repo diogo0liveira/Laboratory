@@ -1,8 +1,10 @@
 package com.dao.mobile.artifact.sqlite.query
 
+import android.database.Cursor
 import com.dao.mobile.artifact.sqlite.Action
 import com.dao.mobile.artifact.sqlite.ResultDatabase
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import com.dao.mobile.artifact.sqlite.query.internal.WhereBase
 import org.jetbrains.anko.db.delete
 
 /**
@@ -11,7 +13,7 @@ import org.jetbrains.anko.db.delete
  * Created in 23/08/18 13:54.
  * @author Diogo Oliveira.
  */
-class Delete internal constructor(private val table: String, private val manager: DBManager)
+class Delete internal constructor(private val table: String, private val manager: DBManager): QueryExecute
 {
     private val where: Where by lazy { Where() }
 
@@ -29,35 +31,22 @@ class Delete internal constructor(private val table: String, private val manager
      *
      * @return resultDatabase com o resultado da operação.
      */
-    fun exec(): ResultDatabase
+    override fun <T> exec(block: (cursor: Cursor) -> T)
     {
         return manager.database.use {
             val result = ResultDatabase(Action.DELETE)
-            result.forDelete(delete(table, where.clause.where(), *where.clause.args()))
-            result
+            result.forDelete(delete(table, where.getClause(), *where.getClauseArgs()))
         }
     }
 
     /**
      * Instância da clausula WHERE para a operação de delete.
      */
-    inner class Where : WhereClause()
+    internal inner class Where : WhereBase()
     {
-        var clause: Clause = Clause()
-
-        override fun clause(): Clause
+        override fun <T> exec(block: (cursor: Cursor) -> T)
         {
-            return clause
-        }
-
-        override fun clause(clause: Clause)
-        {
-            this.clause = clause
-        }
-
-        fun exec(): ResultDatabase
-        {
-            return this@Delete.exec()
+            return this@Delete.exec(block)
         }
     }
 }

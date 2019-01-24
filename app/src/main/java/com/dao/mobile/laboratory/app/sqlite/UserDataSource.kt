@@ -2,7 +2,6 @@ package com.dao.mobile.laboratory.app.sqlite
 
 import android.content.Context
 import androidx.core.database.getIntOrNull
-import com.dao.mobile.artifact.sqlite.query.Select
 import com.dao.mobile.laboratory.app.sqlite.data.helper.COLUMN_USER_ID
 import com.dao.mobile.laboratory.app.sqlite.data.helper.DBHelper
 import com.dao.mobile.laboratory.app.sqlite.data.helper.TABLET_USER
@@ -15,6 +14,8 @@ import org.jetbrains.anko.db.select
  */
 class UserDataSource(context: Context) : DBHelper(context)
 {
+
+
     fun getUsers()
     {
         use {

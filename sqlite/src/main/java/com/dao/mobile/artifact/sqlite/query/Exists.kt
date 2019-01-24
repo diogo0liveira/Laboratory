@@ -1,8 +1,9 @@
 package com.dao.mobile.artifact.sqlite.query
 
-import android.database.sqlite.SQLiteQueryBuilder
-import com.dao.mobile.artifact.common.Logger
+import android.database.Cursor
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import com.dao.mobile.artifact.sqlite.query.internal.QueryBase
+import com.dao.mobile.artifact.sqlite.query.internal.WhereBase
 import org.jetbrains.anko.db.select
 
 /**
@@ -11,17 +12,20 @@ import org.jetbrains.anko.db.select
  * Created in 23/08/18 14:39.
  * @author Diogo Oliveira.
  */
-class Exists internal constructor(private val logger: Boolean = false, private val table: String, private val manager: DBManager)
+class Exists internal constructor(
+        logger: Boolean = false,
+        private val table: String,
+        private val manager: DBManager): QueryBase(logger, table)
 {
     private val where: Where by lazy { Where() }
 
     /**
      * Clausula WHERE para a operação de exists.
      */
-    fun where(clause: Clause): Where
+    fun where(clause: Clause): Exists
     {
-        where.clause(clause)
-        return where
+        where.setClause(clause)
+        return this
     }
 
     /**
@@ -29,62 +33,26 @@ class Exists internal constructor(private val logger: Boolean = false, private v
      *
      * @return true se existir o(s) dados no banco.
      */
-    fun exec(): Boolean
+    override fun <T> exec(block: (cursor: Cursor) -> T)
     {
-        if(logger)
-        {
-            printLogging()
-        }
+        printLogging(where = where)
 
         return manager.database.use {
-            select(table, EXISTS.format(table)).whereArgs(where.clause.where(), *where.clause.args()).limit(1).exec {
-                (moveToFirst() && count == 1)
+            select(table, EXISTS.format(table))
+                    .whereArgs(where.getClause(), *where.getClauseArgs())
+                    .limit(1).exec { (moveToFirst() && count == 1)
             }
         }
-    }
-
-    private fun printLogging()
-    {
-        val query = SQLiteQueryBuilder.buildQueryString(
-                false,
-                table,
-                null,
-                where.clause.where(),
-                null,
-                null,
-                null,
-                null)
-
-        if(where.clause.args().isNotEmpty())
-        {
-            where.clause.args().forEach {
-                query.replaceFirst("\\?", it.second.toString())
-            }
-        }
-
-        Logger.d(TAG, query)
     }
 
     /**
      * Instância da clausula WHERE para a operação de delete.
      */
-    inner class Where : WhereClause()
+    internal inner class Where : WhereBase()
     {
-        var clause: Clause = Clause()
-
-        override fun clause(): Clause
+        override fun <T> exec(block: (cursor: Cursor) -> T)
         {
-            return clause
-        }
-
-        override fun clause(clause: Clause)
-        {
-            this.clause = clause
-        }
-
-        fun exec(): Boolean
-        {
-            return this@Exists.exec()
+            return this@Exists.exec(block)
         }
     }
 }

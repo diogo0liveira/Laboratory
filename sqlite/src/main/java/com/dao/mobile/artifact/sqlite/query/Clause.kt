@@ -344,7 +344,7 @@ class Clause
      *
      * @return string clause construida.
      */
-    fun where(): String
+    fun selection(): String
     {
         return where.toString().trim { it <= ' ' }
     }
