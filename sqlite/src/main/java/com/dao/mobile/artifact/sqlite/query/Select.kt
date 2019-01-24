@@ -48,7 +48,7 @@ class Select internal constructor(private val logger: Boolean = false, private v
      *
      * @return cursor instância atual.
      */
-    fun <T> exec(block: (model: Cursor) -> T): Cursor
+    fun exec(): Cursor
     {
         if(logger)
         {

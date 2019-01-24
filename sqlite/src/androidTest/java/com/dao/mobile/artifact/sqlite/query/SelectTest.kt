@@ -32,14 +32,32 @@ class SelectTest
     @Test
     fun exec()
     {
-        val select = Select(true, "MODEL", database.manager())
-        select.columns("ID", "NAME")
+        val select = Select(false, "MODEL", database.manager())
+//        val test = select.columns("ID", "NAME")
+//                .where(Clause().equal("ID" to 1))
+//                .having("ID = 1")
+//                .groupBy("ID")
+//                .sort("NAME")
+//                .limit(1)
+//                .exec {
+//                    assertThat(it.getString("NAME"), equalTo("TEST"))
+//                    assertThat(it.getInt("ID"), equalTo(1))
+//                    assertThat(it.getColumnName(2), equalTo("NAME"))
+//                    assertThat(it.getColumnName(1), equalTo("ID"))
+//                    assertThat(it.columnCount, equalTo(2))
+//                    assertThat(it.count, equalTo(1))
+//                }
+
+        val test = select.columns("ID", "NAME")
                 .where(Clause().equal("ID" to 1))
-                .having("ID = 1")
-                .groupBy("ID")
-                .sort("NAME")
-                .limit(1)
-                .exec()
+                .exec {
+                    assertThat(it.getString("NAME"), equalTo("TEST"))
+                    assertThat(it.getInt("ID"), equalTo(1))
+                    assertThat(it.getColumnName(2), equalTo("NAME"))
+                    assertThat(it.getColumnName(1), equalTo("ID"))
+                    assertThat(it.columnCount, equalTo(2))
+                    assertThat(it.count, equalTo(1))
+                }
 
 //        assertThat(cursor.getString("NAME"), equalTo("TEST"))
 //        assertThat(cursor.getInt("ID"), equalTo(1))
