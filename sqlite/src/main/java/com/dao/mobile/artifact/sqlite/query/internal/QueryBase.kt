@@ -16,7 +16,7 @@ abstract class QueryBase(
     {
         if(logger)
         {
-            val query = SQLiteQueryBuilder.buildQueryString(
+            var query = SQLiteQueryBuilder.buildQueryString(
                     false,
                     table,
                     columns,
@@ -29,11 +29,11 @@ abstract class QueryBase(
             if(where.getClauseArgs().isNotEmpty())
             {
                 where.getClauseArgs().forEach {
-                    query.replaceFirst("\\?", it.second.toString())
+                    query = query.replaceFirst("{${it.first}}", it.second.toString())
                 }
             }
 
-            Logger . d (TAG, query)
+            Logger.d(TAG, query)
         }
     }
 }

@@ -42,7 +42,6 @@ class SelectTest
               .limit(1)
 
         select exec {
-            it.moveToNext()
             assertThat(it.moveToNext(), `is`(true))
             assertThat(it.getString("NAME"), equalTo("TEST"))
             assertThat(it.getInt("ID"), equalTo(1))
