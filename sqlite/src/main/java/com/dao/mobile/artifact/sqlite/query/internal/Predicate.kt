@@ -1,4 +1,4 @@
-package com.dao.mobile.artifact.sqlite.query
+package com.dao.mobile.artifact.sqlite.query.internal
 
 /**
  * Created in 23/08/18 14:38.

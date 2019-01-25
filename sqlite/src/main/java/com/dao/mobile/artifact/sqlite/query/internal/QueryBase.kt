@@ -2,8 +2,6 @@ package com.dao.mobile.artifact.sqlite.query.internal
 
 import android.database.sqlite.SQLiteQueryBuilder
 import com.dao.mobile.artifact.common.Logger
-import com.dao.mobile.artifact.sqlite.query.QueryExecute
-import com.dao.mobile.artifact.sqlite.query.TAG
 
 /**
  * Created in 24/01/19 13:38.
@@ -12,7 +10,7 @@ import com.dao.mobile.artifact.sqlite.query.TAG
  */
 abstract class QueryBase(
         private val logger: Boolean,
-        private val table: String) : QueryExecute
+        private val table: String)
 {
     internal fun printLogging(columns: Array<String> = arrayOf(), where: WhereBase)
     {

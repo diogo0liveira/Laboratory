@@ -7,7 +7,7 @@ import android.database.Cursor
  *
  * @author Diogo Oliveira.
  */
-interface QueryExecute
+interface RunSelect
 {
     infix fun <T> exec(block: (cursor: Cursor) -> T)
 }

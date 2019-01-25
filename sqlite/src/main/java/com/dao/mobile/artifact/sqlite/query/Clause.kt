@@ -1,5 +1,7 @@
 package com.dao.mobile.artifact.sqlite.query
 
+import com.dao.mobile.artifact.sqlite.query.internal.*
+
 /**
  * Created in 23/08/18 13:03.
  *
@@ -344,7 +346,7 @@ class Clause
      *
      * @return string clause construida.
      */
-    fun selection(): String
+    fun where(): String
     {
         return where.toString().trim { it <= ' ' }
     }

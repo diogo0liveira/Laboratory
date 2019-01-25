@@ -17,7 +17,7 @@ import org.jetbrains.anko.db.select
 class Select internal constructor(
         logger: Boolean = false,
         private val table: String,
-        private val manager: DBManager) : QueryBase(logger, table), SelectWhere
+        private val manager: DBManager) : QueryBase(logger, table), SelectClause
 {
     private val where: Where by lazy { Where() }
     private var columns: Array<String> = arrayOf()
@@ -27,44 +27,37 @@ class Select internal constructor(
      *
      * @param columns colunas que serão retornadas.
      */
-    fun columns(vararg columns: String): Select
+    fun columns(vararg columns: String): SelectClause
     {
         this.columns = arrayOf(*columns)
         return this
     }
 
-    /**
-     * Clausula "where" utilizada na instrução.
-     *
-     * @param clause clausula where.
-     *
-     * @return where instância atual.
-     */
-    infix fun where(clause: Clause): SelectWhere
+    override fun where(clause: Clause): Aggregate
     {
         this.where.setClause(clause)
-        return where
+        return this
     }
 
-    override fun groupBy(group: String): SelectWhere
+    override fun groupBy(group: String): Aggregate
     {
         where.group = group
         return this
     }
 
-    override fun having(having: String): SelectWhere
+    override fun having(having: String): Aggregate
     {
         where.having = having
         return this
     }
 
-    override fun sort(sort: String): SelectWhere
+    override fun sort(sort: String): Aggregate
     {
         where.sort = sort
         return this
     }
 
-    override fun limit(limit: Int): SelectWhere
+    override fun limit(limit: Int): Aggregate
     {
         where.limit = limit
         return this
@@ -116,38 +109,11 @@ class Select internal constructor(
         }
     }
 
-    /**
-     * Instância da clausula WHERE para a operação.
-     */
-    internal inner class Where : WhereBase(), SelectWhere
+    internal open inner class Where : WhereBase(), RunSelect
     {
         override fun <T> exec(block: (cursor: Cursor) -> T)
         {
             return this@Select.exec(block)
-        }
-
-        override fun groupBy(group: String): SelectWhere
-        {
-            this.group = group
-            return this
-        }
-
-        override fun having(having: String): SelectWhere
-        {
-            this.having = having
-            return this
-        }
-
-        override fun sort(sort: String): SelectWhere
-        {
-            this.sort = sort
-            return this
-        }
-
-        override fun limit(limit: Int): SelectWhere
-        {
-            this.limit = limit
-            return this
         }
     }
 }

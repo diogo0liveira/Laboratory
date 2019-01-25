@@ -1,14 +1,13 @@
 package com.dao.mobile.artifact.sqlite.query.internal
 
 import com.dao.mobile.artifact.sqlite.query.Clause
-import com.dao.mobile.artifact.sqlite.query.QueryExecute
 
 /**
  * Created in 24/01/19 13:29.
  *
  * @author Diogo Oliveira.
  */
-internal abstract class WhereBase: QueryExecute
+internal abstract class WhereBase
 {
     private var clause: Clause = Clause()
     var having: String = ""
@@ -23,7 +22,7 @@ internal abstract class WhereBase: QueryExecute
 
     fun getClause(): String
     {
-        return clause.selection()
+        return clause.where()
     }
 
     fun setClause(clause: Clause)

@@ -1,7 +1,7 @@
 package com.dao.mobile.artifact.sqlite.query
 
-import android.database.Cursor
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import com.dao.mobile.artifact.sqlite.query.internal.EXISTS
 import com.dao.mobile.artifact.sqlite.query.internal.QueryBase
 import com.dao.mobile.artifact.sqlite.query.internal.WhereBase
 import org.jetbrains.anko.db.select
@@ -15,14 +15,14 @@ import org.jetbrains.anko.db.select
 class Exists internal constructor(
         logger: Boolean = false,
         private val table: String,
-        private val manager: DBManager): QueryBase(logger, table)
+        private val manager: DBManager): QueryBase(logger, table), RunExists
 {
-    private val where: Where by lazy { Where() }
+    internal val where: Where by lazy { Where() }
 
     /**
      * Clausula WHERE para a operação de exists.
      */
-    fun where(clause: Clause): Exists
+    fun where(clause: Clause): RunExists
     {
         where.setClause(clause)
         return this
@@ -33,7 +33,7 @@ class Exists internal constructor(
      *
      * @return true se existir o(s) dados no banco.
      */
-    override fun <T> exec(block: (cursor: Cursor) -> T)
+    override fun exec(): Boolean
     {
         printLogging(where = where)
 
@@ -41,18 +41,15 @@ class Exists internal constructor(
             select(table, EXISTS.format(table))
                     .whereArgs(where.getClause(), *where.getClauseArgs())
                     .limit(1).exec { (moveToFirst() && count == 1)
-            }
+                    }
         }
     }
 
-    /**
-     * Instância da clausula WHERE para a operação de delete.
-     */
-    internal inner class Where : WhereBase()
+    internal open inner class Where : WhereBase(), RunExists
     {
-        override fun <T> exec(block: (cursor: Cursor) -> T)
+        override fun exec(): Boolean
         {
-            return this@Exists.exec(block)
+            return this@Exists.exec()
         }
     }
 }

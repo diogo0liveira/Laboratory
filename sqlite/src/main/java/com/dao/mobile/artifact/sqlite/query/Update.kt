@@ -3,6 +3,7 @@ package com.dao.mobile.artifact.sqlite.query
 import com.dao.mobile.artifact.sqlite.Action
 import com.dao.mobile.artifact.sqlite.ResultDatabase
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import com.dao.mobile.artifact.sqlite.query.internal.WhereBase
 import org.jetbrains.anko.db.update
 
 /**
@@ -11,17 +12,19 @@ import org.jetbrains.anko.db.update
  * Created in 23/08/18 15:28.
  * @author Diogo Oliveira.
  */
-class Update internal constructor(private val table: String, private val manager: DBManager)
+class Update internal constructor(
+        private val table: String,
+        private val manager: DBManager): RunUpdate
 {
-    private val where: Where by lazy { Where() }
+    internal val where: Where by lazy { Where() }
 
     /**
-     * Clausula WHERE {@link Update.Where} para a operação de update.
+     * Clausula WHERE para a operação.
      */
-    fun where(clause: Clause): Where
+    infix fun where(clause: Clause): RunUpdate
     {
-        where.clause(clause)
-        return where
+        where.setClause(clause)
+        return this
     }
 
     /**
@@ -29,33 +32,18 @@ class Update internal constructor(private val table: String, private val manager
      *
      * @return resultDatabase com o resultado da operação.
      */
-    fun exec(vararg values: Pair<String, Any?>): ResultDatabase
+    override fun exec(vararg values: Pair<String, Any?>): ResultDatabase
     {
         return manager.database.use {
             val result = ResultDatabase(Action.UPDATE)
-            result.forUpdate(update(table, *values).whereArgs(where.clause.where(), *where.clause.args()).exec())
+            result.forUpdate(update(table, *values).whereArgs(where.getClause(), *where.getClauseArgs()).exec())
             result
         }
     }
 
-    /**
-     * Instância da clausula WHERE para a operação de update.
-     */
-    inner class Where : WhereClause()
+    internal open inner class Where : WhereBase(), RunUpdate
     {
-        var clause: Clause = Clause()
-
-        override fun clause(): Clause
-        {
-            return clause
-        }
-
-        override fun clause(clause: Clause)
-        {
-            this.clause = clause
-        }
-
-        fun exec(vararg values: Pair<String, Any?>): ResultDatabase
+        override fun exec(vararg values: Pair<String, Any?>): ResultDatabase
         {
             return this@Update.exec(*values)
         }
