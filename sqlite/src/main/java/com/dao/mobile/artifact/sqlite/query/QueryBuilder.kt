@@ -14,8 +14,6 @@ class QueryBuilder internal constructor(private val table: String, private val m
 {
     constructor(join: Join, manager: DBManager) : this(join.build(), manager)
 
-    private var logger = false
-
     /**
      * Adiciona colunas utilizada nas instrução.
      *
@@ -24,7 +22,7 @@ class QueryBuilder internal constructor(private val table: String, private val m
      */
     fun select(vararg columns: String): Select
     {
-        val select = Select(logger, table, manager)
+        val select = Select(table, manager)
         select.columns(*columns)
         return select
     }
@@ -36,7 +34,7 @@ class QueryBuilder internal constructor(private val table: String, private val m
      */
     fun exists(): Exists
     {
-        return Exists(logger, table, manager)
+        return Exists(table, manager)
     }
 
     /**
@@ -67,18 +65,5 @@ class QueryBuilder internal constructor(private val table: String, private val m
     fun delete(): Delete
     {
         return Delete(table, manager)
-    }
-
-    /**
-     * Imprime a instrução no logcat.
-     *
-     * @param logger true para exibir a instrução.
-     *
-     * @return queryBuilder instância atual.
-     */
-    fun enableLogging(logger: Boolean): QueryBuilder
-    {
-        this.logger = logger
-        return this
     }
 }

@@ -9,7 +9,7 @@ import com.dao.mobile.artifact.sqlite.query.Clause
  */
 internal abstract class WhereBase
 {
-    private var clause: Clause = Clause()
+    internal var clause: Clause = Clause()
     var having: String = ""
     var group: String = ""
     var sort: String = ""

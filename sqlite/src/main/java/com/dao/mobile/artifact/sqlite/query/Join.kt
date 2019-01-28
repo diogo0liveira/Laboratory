@@ -62,7 +62,7 @@ class Join
     {
         var query = ""
 
-        joins.forEach { it ->
+        joins.forEach {
             query = query.plus("${it.key.first} JOIN ${it.key.second}%s".format(when
             {
                 it.value.isEmpty() -> ""

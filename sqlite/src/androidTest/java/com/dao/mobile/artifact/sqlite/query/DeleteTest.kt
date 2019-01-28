@@ -1,5 +1,6 @@
 package com.dao.mobile.artifact.sqlite.query
 
+import com.dao.mobile.artifact.common.Logger
 import com.dao.mobile.artifact.sqlite.data.Model
 import com.dao.mobile.artifact.sqlite.data.ModelDataSource
 import org.hamcrest.CoreMatchers.`is`
@@ -21,6 +22,7 @@ class DeleteTest
     @Before
     fun setUp()
     {
+        Logger.initialize(true, "SQL")
         model = Model(1, "TEST")
         database = ModelDataSource()
 

@@ -22,7 +22,7 @@ import org.jetbrains.anko.db.update
  * Created in 22/08/18 14:18.
  * @author Diogo Oliveira.
  */
-abstract class DBConnectionHelper<T>(val name: String, val version: Int, private val table: String = "")
+abstract class DBConnectionHelper<T>(val name: String, val version: Int, private val table: String = "", val logging: Boolean = false)
 {
     private val manager: DBManager by lazy { DBManager.initialize(this) }
 

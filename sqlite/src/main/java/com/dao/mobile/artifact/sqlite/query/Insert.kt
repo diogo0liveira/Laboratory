@@ -3,6 +3,7 @@ package com.dao.mobile.artifact.sqlite.query
 import com.dao.mobile.artifact.sqlite.Action
 import com.dao.mobile.artifact.sqlite.ResultDatabase
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import com.dao.mobile.artifact.sqlite.helper.DBManager.printStatementLogging
 import org.jetbrains.anko.db.insert
 
 /**
@@ -22,6 +23,8 @@ class Insert internal constructor(
      */
     fun exec(vararg values: Pair<String, Any?>): ResultDatabase
     {
+        printStatementLogging(Action.INSERT, table, *values)
+
         return manager.database.use {
             val result = ResultDatabase(Action.INSERT)
             result.forInsert(insert(table, values = *values))

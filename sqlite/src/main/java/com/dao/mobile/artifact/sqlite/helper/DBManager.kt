@@ -1,13 +1,18 @@
 package com.dao.mobile.artifact.sqlite.helper
 
 import android.database.Cursor
+import android.database.sqlite.SQLiteCursor
 import android.database.sqlite.SQLiteCursorDriver
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteQuery
 import com.dao.mobile.artifact.common.ApplicationController
+import com.dao.mobile.artifact.common.Logger
+import com.dao.mobile.artifact.sqlite.Action
+import com.dao.mobile.artifact.sqlite.query.Clause
+import com.dao.mobile.artifact.sqlite.query.internal.DELETE
+import com.dao.mobile.artifact.sqlite.query.internal.INSERT
+import com.dao.mobile.artifact.sqlite.query.internal.UPDATE
 import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
-import android.database.sqlite.SQLiteCursor
-
 
 
 /**
@@ -17,7 +22,7 @@ import android.database.sqlite.SQLiteCursor
  */
 object DBManager
 {
-    private lateinit var connection : DBConnectionHelper<*>
+    private lateinit var connection: DBConnectionHelper<*>
     internal val database: Database by lazy { Database(connection) }
 
     /**
@@ -52,6 +57,43 @@ object DBManager
         return database
     }
 
+    internal fun printStatementLogging(action: Action, table: String, vararg values: Pair<String, Any?>, clause: Clause = Clause())
+    {
+        if(connection.logging)
+        {
+            val statement = StringBuilder(
+
+                    when(action)
+                    {
+                        Action.INSERT ->
+                        {
+                            INSERT.format(table,
+                                    values.joinToString(", ") { it.first },
+                                    values.joinToString(", ") { it.second.toString() })
+                        }
+                        Action.UPDATE ->
+                        {
+                            UPDATE.format(table,
+                                values.joinToString(", ") { it.first + " = " + it.second })
+                        }
+                        Action.DELETE ->
+                        {
+                            DELETE.format(table)
+                        }
+                    })
+
+            if(clause.args().isNotEmpty())
+            {
+                statement.append(" WHERE ").append(clause.args().fold(clause.where()) {
+                    str, arg ->
+                    str.replace("{${arg.first}}", arg.second.toString())
+                }).append(";")
+            }
+
+            Logger.d(statement.toString())
+        }
+    }
+
     internal class Database(private val helper: DBConnectionHelper<*>) :
             ManagedSQLiteOpenHelper(ApplicationController.getInstance().getContext(), helper.name, Factory(), version = helper.version)
     {
@@ -75,8 +117,11 @@ object DBManager
     {
         override fun newCursor(db: SQLiteDatabase?, masterQuery: SQLiteCursorDriver?, editTable: String?, query: SQLiteQuery?): Cursor
         {
-            if(db != null) {
-
+            if(connection.logging)
+            {
+                masterQuery.also {
+                    Logger.d(it.toString().split(":")[1])
+                }
             }
 
             return SQLiteCursor(masterQuery, editTable, query)

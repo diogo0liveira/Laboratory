@@ -3,6 +3,7 @@ package com.dao.mobile.artifact.sqlite.query
 import com.dao.mobile.artifact.sqlite.Action
 import com.dao.mobile.artifact.sqlite.ResultDatabase
 import com.dao.mobile.artifact.sqlite.helper.DBManager
+import com.dao.mobile.artifact.sqlite.helper.DBManager.printStatementLogging
 import com.dao.mobile.artifact.sqlite.query.internal.WhereBase
 import org.jetbrains.anko.db.update
 
@@ -34,6 +35,8 @@ class Update internal constructor(
      */
     override fun exec(vararg values: Pair<String, Any?>): ResultDatabase
     {
+        printStatementLogging(Action.UPDATE, table, *values, clause = where.clause)
+
         return manager.database.use {
             val result = ResultDatabase(Action.UPDATE)
             result.forUpdate(update(table, *values).whereArgs(where.getClause(), *where.getClauseArgs()).exec())

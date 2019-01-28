@@ -2,7 +2,6 @@ package com.dao.mobile.artifact.sqlite.query
 
 import com.dao.mobile.artifact.sqlite.helper.DBManager
 import com.dao.mobile.artifact.sqlite.query.internal.EXISTS
-import com.dao.mobile.artifact.sqlite.query.internal.QueryBase
 import com.dao.mobile.artifact.sqlite.query.internal.WhereBase
 import org.jetbrains.anko.db.select
 
@@ -13,9 +12,8 @@ import org.jetbrains.anko.db.select
  * @author Diogo Oliveira.
  */
 class Exists internal constructor(
-        logger: Boolean = false,
         private val table: String,
-        private val manager: DBManager): QueryBase(logger, table), RunExists
+        private val manager: DBManager): RunExists
 {
     internal val where: Where by lazy { Where() }
 
@@ -35,8 +33,6 @@ class Exists internal constructor(
      */
     override fun exec(): Boolean
     {
-        printLogging(where = where)
-
         return manager.database.use {
             select(table, EXISTS.format(table))
                     .whereArgs(where.getClause(), *where.getClauseArgs())

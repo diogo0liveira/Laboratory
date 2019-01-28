@@ -5,8 +5,6 @@ package com.dao.mobile.artifact.sqlite.query.internal
  *
  * @author Diogo Oliveira.
  */
-internal const val TAG = "QUERY-BUILDER"
-
 internal const val SPACE = "\u0020"
 internal const val IN = " %s IN(%s)"
 internal const val EQUAL = " %s = {%s}"
@@ -22,3 +20,6 @@ internal const val NOT_EMPTY = " TRIM(%s) != \"\""
 
 internal const val COLUMN = "value"
 internal const val EXISTS = "EXISTS(SELECT 1 FROM %s) AS $COLUMN"
+internal const val INSERT = "INSERT INTO %s (%s) VALUES(%s);"
+internal const val UPDATE = "UPDATE %s SET %s"
+internal const val DELETE = "DELETE FROM %s"

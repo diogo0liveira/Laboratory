@@ -1,5 +1,6 @@
 package com.dao.mobile.artifact.sqlite.query
 
+import com.dao.mobile.artifact.common.Logger
 import com.dao.mobile.artifact.sqlite.data.Model
 import com.dao.mobile.artifact.sqlite.data.ModelDataSource
 import com.dao.mobile.artifact.sqlite.getInt
@@ -23,6 +24,7 @@ class SelectTest
     @Before
     fun setUp()
     {
+        Logger.initialize(true, "SQL")
         model = Model(1, "TEST")
         database = ModelDataSource()
 
@@ -33,7 +35,7 @@ class SelectTest
     @Test
     fun exec()
     {
-        val select = Select(true, "MODEL", database.manager())
+        val select = Select("MODEL", database.manager())
         select.columns("ID", "NAME")
               .where(Clause().equal("ID" to 1))
               .having("ID = 1")

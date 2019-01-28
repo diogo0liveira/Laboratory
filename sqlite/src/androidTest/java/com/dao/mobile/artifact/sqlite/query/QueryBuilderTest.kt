@@ -1,5 +1,6 @@
 package com.dao.mobile.artifact.sqlite.query
 
+import com.dao.mobile.artifact.common.Logger
 import com.dao.mobile.artifact.sqlite.data.Model
 import com.dao.mobile.artifact.sqlite.data.ModelDataSource
 import com.dao.mobile.artifact.sqlite.getInt
@@ -24,6 +25,7 @@ class QueryBuilderTest
     @Before
     fun setUp()
     {
+        Logger.initialize(true, "SQL")
         model = Model(1, "TEST")
         database = ModelDataSource()
         database.deleteAll()

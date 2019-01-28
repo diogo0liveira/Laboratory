@@ -36,7 +36,7 @@ open class ApplicationController : Application()
      *
      * @return true quando a aplicação estiver em execução.
      */
-    var isRunning: Boolean = false
+    private var isRunning: Boolean = false
 
     override fun onCreate()
     {

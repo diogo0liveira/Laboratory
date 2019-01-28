@@ -17,7 +17,7 @@ class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
         // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().getTargetContext()
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.dao.mobile.laboratory.app", appContext.packageName)
     }
 }

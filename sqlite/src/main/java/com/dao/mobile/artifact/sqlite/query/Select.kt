@@ -3,7 +3,6 @@ package com.dao.mobile.artifact.sqlite.query
 import android.database.Cursor
 import com.dao.mobile.artifact.common.numbers.isPositive
 import com.dao.mobile.artifact.sqlite.helper.DBManager
-import com.dao.mobile.artifact.sqlite.query.internal.QueryBase
 import com.dao.mobile.artifact.sqlite.query.internal.WhereBase
 import org.jetbrains.anko.db.SelectQueryBuilder
 import org.jetbrains.anko.db.select
@@ -15,9 +14,8 @@ import org.jetbrains.anko.db.select
  * @author Diogo Oliveira.
  */
 class Select internal constructor(
-        logger: Boolean = false,
         private val table: String,
-        private val manager: DBManager) : QueryBase(logger, table), SelectClause
+        private val manager: DBManager) : SelectClause
 {
     private val where: Where by lazy { Where() }
     private var columns: Array<String> = arrayOf()
@@ -70,8 +68,6 @@ class Select internal constructor(
      */
     override fun <T> exec(block: (cursor: Cursor) -> T)
     {
-        printLogging(columns, where)
-
         return manager.database.use {
             val builder: SelectQueryBuilder = select(table)
 

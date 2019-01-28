@@ -1,5 +1,6 @@
 package com.dao.mobile.artifact.sqlite.query
 
+import com.dao.mobile.artifact.common.Logger
 import com.dao.mobile.artifact.sqlite.data.ModelDataSource
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
@@ -19,6 +20,7 @@ class InsertTest
     @Before
     fun setUp()
     {
+        Logger.initialize(true, "SQL")
         database = ModelDataSource()
         database.deleteAll()
     }
