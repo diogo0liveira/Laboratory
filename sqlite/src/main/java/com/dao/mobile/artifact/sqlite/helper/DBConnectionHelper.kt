@@ -11,10 +11,7 @@ import com.dao.mobile.artifact.sqlite.BindValue
 import com.dao.mobile.artifact.sqlite.ResultDatabase
 import com.dao.mobile.artifact.sqlite.query.Clause
 import com.dao.mobile.artifact.sqlite.query.QueryBuilder
-import org.jetbrains.anko.db.delete
-import org.jetbrains.anko.db.insert
-import org.jetbrains.anko.db.select
-import org.jetbrains.anko.db.update
+import org.jetbrains.anko.db.*
 
 /**
  * Estabelece uma conexão com o banco.
@@ -196,12 +193,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         return manager.database.use {
             val clause = constraints(model)
             select(table).whereArgs(clause.where(), *clause.args()).exec {
-                if((this.moveToFirst() && this.count == 1))
-                {
-                    model(this)
-                }
-
-                null
+                this.returnToSingle()
             }
         }
     }
@@ -253,12 +245,17 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         return QueryBuilder(table, manager)
     }
 
-    fun Cursor.returnToSingle(): T
+    private fun Cursor.returnToSingle(): T?
     {
-        return model(this)
+        if(this.moveToFirst() && (this.count == 1))
+        {
+            model(this)
+        }
+
+        return null
     }
 
-    fun Cursor.returnToList(): MutableList<T>
+    private fun Cursor.returnToList(): MutableList<T>
     {
         if(this.moveToFirst())
         {
