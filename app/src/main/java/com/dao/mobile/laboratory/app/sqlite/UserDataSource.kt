@@ -7,6 +7,7 @@ import com.dao.mobile.laboratory.app.sqlite.data.helper.DBHelper
 import com.dao.mobile.laboratory.app.sqlite.data.helper.TABLET_USER
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.db.select
 
 /**
  * Created in 03/08/18 13:45.
@@ -21,10 +22,11 @@ class UserDataSource(context: Context) : DBHelper(context)
             insert(TABLET_USER, COLUMN_USER_ID to 101, COLUMN_USER_NAME to "test")
         }
 
-        use {
-            enableWriteAheadLogging()
-            delete(TABLET_USER, "$COLUMN_USER_ID = {ID}", COLUMN_USER_ID to 101)
-        }
+//        use {
+//            enableWriteAheadLogging()
+//            delete(TABLET_USER, "$COLUMN_USER_ID = {ID}", COLUMN_USER_ID to 101)
+//        }
+
 
 //        use {
 //            select(TABLET_USER).exec {

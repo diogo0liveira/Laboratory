@@ -18,9 +18,6 @@ class ModelDataSource : DBHelper<Model>(TABLE_MODEL)
 {
     fun deleteAll()
     {
-        queryBuilder().select().exec {
-            model(it)
-        }
         writable().delete(TABLE_MODEL, null, null)
     }
 

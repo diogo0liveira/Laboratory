@@ -1,8 +1,7 @@
 package com.dao.mobile.artifact.sqlite.query
 
 import com.dao.mobile.artifact.common.Logger
-import com.dao.mobile.artifact.sqlite.data.Model
-import com.dao.mobile.artifact.sqlite.data.ModelDataSource
+import com.dao.mobile.artifact.sqlite.data.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -23,7 +22,7 @@ class DeleteTest
     fun setUp()
     {
         Logger.initialize(true, "SQL")
-        model = Model(1, "TEST")
+        model = Model(MOCK_ID, MOCK_NAME)
         database = ModelDataSource()
 
         database.deleteAll()
@@ -33,8 +32,8 @@ class DeleteTest
     @Test
     fun exec()
     {
-        val delete = Delete("MODEL", database.manager())
-        val resultDatabase = delete.where(Clause().equal("ID" to 1)).exec()
+        val delete = Delete(TABLE_MODEL, database.manager())
+        val resultDatabase = delete.where(Clause().equal(COLUMN_ID to MOCK_ID)).exec()
 
         assertThat(resultDatabase.isSuccessful(), `is`(true))
         assertThat(resultDatabase.getCount(), equalTo(1))

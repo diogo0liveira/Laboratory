@@ -1,8 +1,7 @@
 package com.dao.mobile.artifact.sqlite.query
 
 import com.dao.mobile.artifact.common.Logger
-import com.dao.mobile.artifact.sqlite.data.Model
-import com.dao.mobile.artifact.sqlite.data.ModelDataSource
+import com.dao.mobile.artifact.sqlite.data.*
 import com.dao.mobile.artifact.sqlite.getInt
 import com.dao.mobile.artifact.sqlite.getString
 import org.hamcrest.CoreMatchers.`is`
@@ -30,20 +29,23 @@ class QueryBuilderTest
         database = ModelDataSource()
         database.deleteAll()
 
-        query = QueryBuilder("MODEL", database.manager())
+        query = QueryBuilder(TABLE_MODEL, database.manager())
     }
 
     @Test
     fun select()
     {
         database.insert(model)
-        query.select("ID", "NAME") exec {
-            assertThat(it.moveToNext(), `is`(true))
-            assertThat(it.getString("NAME"), equalTo("TEST"))
-            assertThat(it.getInt("ID"), equalTo(1))
 
-            assertThat(it.getColumnName(2), equalTo("NAME"))
-            assertThat(it.getColumnName(1), equalTo("ID"))
+        query.select(COLUMN_ID, COLUMN_NAME)
+             .where(Clause().`in`(COLUMN_ID to arrayOf(MOCK_ID))) exec {
+
+            assertThat(it.moveToNext(), `is`(true))
+            assertThat(it.getString(COLUMN_NAME), equalTo(MOCK_NAME))
+            assertThat(it.getInt(COLUMN_ID), equalTo(MOCK_ID))
+
+            assertThat(it.getColumnName(1), equalTo(COLUMN_NAME))
+            assertThat(it.getColumnName(0), equalTo(COLUMN_ID))
 
             assertThat(it.columnCount, equalTo(2))
             assertThat(it.count, equalTo(1))
@@ -54,14 +56,14 @@ class QueryBuilderTest
     fun exists()
     {
         database.insert(model)
-        val clause = Clause().equal("ID" to 1)
+        val clause = Clause().equal(COLUMN_ID to 1)
         assertThat(query.exists().where(clause).exec(), `is`(true))
     }
 
     @Test
     fun insert()
     {
-        val values = arrayOf("ID" to 1, "NAME" to "TEST")
+        val values = arrayOf(COLUMN_ID to MOCK_ID, COLUMN_NAME to MOCK_NAME)
         val resultDatabase = query.insert().exec(*values)
 
         assertThat(resultDatabase.isSuccessful(), `is`(true))
@@ -73,8 +75,8 @@ class QueryBuilderTest
     fun update()
     {
         database.insert(model)
-        val values = arrayOf("ID" to 1, "NAME" to "TEST")
-        val resultDatabase = query.update().where(Clause().equal("ID" to 1)).exec(*values)
+        val values = arrayOf(COLUMN_ID to MOCK_ID, COLUMN_NAME to MOCK_NAME)
+        val resultDatabase = query.update().where(Clause().equal(COLUMN_ID to MOCK_ID)).exec(*values)
 
         assertThat(resultDatabase.isSuccessful(), `is`(true))
         assertThat(resultDatabase.getCount(), equalTo(1))
@@ -85,7 +87,7 @@ class QueryBuilderTest
     fun delete()
     {
         database.insert(model)
-        val clause = Clause().equal("ID" to 1)
+        val clause = Clause().equal(COLUMN_ID to MOCK_ID)
         val resultDatabase = query.delete().where(clause).exec()
 
         assertThat(resultDatabase.isSuccessful(), `is`(true))

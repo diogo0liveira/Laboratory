@@ -33,11 +33,11 @@ class ClauseTest
     @Test
     fun `in`()
     {
-        val where = "ID IN({ID}, {ID})"
-        val arg: Array<Pair<String, Any>> = arrayOf("ID" to 1, "ID" to 2)
+        val where = "ID IN({ID1}, {ID2})"
+        val arg: Array<Pair<String, Any>> = arrayOf("ID1" to 1, "ID2" to 2)
         clause.`in`("ID" to arrayOf(1, 2))
 
-        assertThat(clause.argsToString(), equalTo(arrayOf("ID")))
+        assertThat(clause.argsToString(), equalTo(arrayOf("ID1", "ID2")))
         assertThat(clause.where(), equalTo(where))
         assertThat(clause.args(), equalTo(arg))
     }

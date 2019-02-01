@@ -1,8 +1,7 @@
 package com.dao.mobile.artifact.sqlite.helper
 
 import com.dao.mobile.artifact.sqlite.ResultDatabase
-import com.dao.mobile.artifact.sqlite.data.Model
-import com.dao.mobile.artifact.sqlite.data.ModelDataSource
+import com.dao.mobile.artifact.sqlite.data.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -22,7 +21,7 @@ class DBConnectionHelperTest
     @Before
     fun setUp()
     {
-        model = Model(1, "TEST")
+        model = Model(MOCK_ID, MOCK_NAME)
         database = ModelDataSource()
         database.deleteAll()
     }
@@ -43,8 +42,7 @@ class DBConnectionHelperTest
         val result: ResultDatabase = database.insert(listOf(model))
         assertThat(true, `is`(result.isSuccessful()))
         assertThat(true, `is`(result.isInsert()))
-        assertThat(1, `is`(result.getRow()))
-        assertThat(1, `is`(result.getRow()))
+        assertThat(1, `is`(result.getCount()))
     }
 
     @Test
@@ -68,7 +66,6 @@ class DBConnectionHelperTest
         assertThat(true, `is`(result.isSuccessful()))
         assertThat(true, `is`(result.isUpdate()))
         assertThat(1, `is`(result.getCount()))
-        assertThat(1, `is`(result.getRow()))
     }
 
     @Test
@@ -117,12 +114,13 @@ class DBConnectionHelperTest
     @Test
     fun getName()
     {
-        assertThat("ModelTest.db", equalTo(database.name))
+        DB_NAME
+        assertThat(DB_NAME, equalTo(database.name))
     }
 
     @Test
     fun getVersion()
     {
-        assertThat(1, equalTo(database.version))
+        assertThat(DB_VERSION, equalTo(database.version))
     }
 }

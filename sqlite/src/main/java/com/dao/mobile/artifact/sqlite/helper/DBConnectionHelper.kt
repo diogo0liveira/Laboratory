@@ -249,7 +249,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
     {
         if(this.moveToFirst() && (this.count == 1))
         {
-            model(this)
+           return model(this)
         }
 
         return null

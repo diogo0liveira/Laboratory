@@ -1,8 +1,7 @@
 package com.dao.mobile.artifact.sqlite.query
 
 import com.dao.mobile.artifact.common.Logger
-import com.dao.mobile.artifact.sqlite.data.Model
-import com.dao.mobile.artifact.sqlite.data.ModelDataSource
+import com.dao.mobile.artifact.sqlite.data.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -23,7 +22,7 @@ class UpdateTest
     fun setUp()
     {
         Logger.initialize(true, "SQL")
-        model = Model(1, "TEST")
+        model = Model(MOCK_ID, MOCK_NAME)
         database = ModelDataSource()
 
         database.deleteAll()
@@ -33,9 +32,9 @@ class UpdateTest
     @Test
     fun exec()
     {
-        val values = arrayOf("ID" to 1, "NAME" to "TEST")
-        val update = Update("MODEL", database.manager())
-        val clause = Clause().equal("ID" to 1)
+        val values = arrayOf(COLUMN_ID to MOCK_ID, COLUMN_NAME to MOCK_NAME)
+        val update = Update(TABLE_MODEL, database.manager())
+        val clause = Clause().equal(COLUMN_ID to MOCK_ID)
         val resultDatabase = update.where(clause).exec(*values)
 
         assertThat(resultDatabase.isSuccessful(), `is`(true))

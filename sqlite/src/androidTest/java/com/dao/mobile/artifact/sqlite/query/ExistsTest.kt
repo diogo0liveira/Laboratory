@@ -1,8 +1,7 @@
 package com.dao.mobile.artifact.sqlite.query
 
 import com.dao.mobile.artifact.common.Logger
-import com.dao.mobile.artifact.sqlite.data.Model
-import com.dao.mobile.artifact.sqlite.data.ModelDataSource
+import com.dao.mobile.artifact.sqlite.data.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -22,7 +21,7 @@ class ExistsTest
     fun setUp()
     {
         Logger.initialize(true, "SQL")
-        model = Model(1, "TEST")
+        model = Model(MOCK_ID, MOCK_NAME)
         database = ModelDataSource()
 
         database.deleteAll()
@@ -32,7 +31,7 @@ class ExistsTest
     @Test
     fun exec()
     {
-        val exists = Exists("MODEL", database.manager())
-        assertThat(exists.where(Clause().equal("ID" to 1)).exec(), `is`(true))
+        val exists = Exists(TABLE_MODEL, database.manager())
+        assertThat(exists.where(Clause().equal(COLUMN_ID to MOCK_ID)).exec(), `is`(true))
     }
 }

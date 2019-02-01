@@ -9,8 +9,8 @@ import org.jetbrains.anko.db.*
  *
  * @author Diogo Oliveira.
  */
-private const val DB_NAME = "ModelTest.db"
-private const val DB_VERSION = 1
+const val DB_NAME = "ModelTest.db"
+const val DB_VERSION = 1
 
 abstract class DBHelper<T>(table: String) : DBConnectionHelper<T>(DB_NAME, DB_VERSION, table, true)
 {

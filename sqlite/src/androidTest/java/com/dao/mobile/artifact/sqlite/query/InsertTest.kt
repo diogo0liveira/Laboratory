@@ -1,7 +1,7 @@
 package com.dao.mobile.artifact.sqlite.query
 
 import com.dao.mobile.artifact.common.Logger
-import com.dao.mobile.artifact.sqlite.data.ModelDataSource
+import com.dao.mobile.artifact.sqlite.data.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -28,8 +28,8 @@ class InsertTest
     @Test
     fun exec()
     {
-        val values = arrayOf("ID" to 1, "NAME" to "TEST")
-        val insert = Insert("MODEL", database.manager())
+        val values = arrayOf(COLUMN_ID to MOCK_ID, COLUMN_NAME to MOCK_NAME)
+        val insert = Insert(TABLE_MODEL, database.manager())
         val resultDatabase = insert.exec(*values)
 
         assertThat(resultDatabase.isSuccessful(), `is`(true))

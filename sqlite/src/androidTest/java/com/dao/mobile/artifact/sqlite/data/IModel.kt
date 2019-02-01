@@ -8,3 +8,6 @@ package com.dao.mobile.artifact.sqlite.data
 const val TABLE_MODEL = "MODEL"
 const val COLUMN_ID = "ID"
 const val COLUMN_NAME = "NAME"
+
+const val MOCK_ID = 1
+const val MOCK_NAME = "TEST"

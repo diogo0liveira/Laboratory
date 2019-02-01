@@ -28,7 +28,7 @@ class Clause
     /**
      * Constroi a clausula COLUMN IN(PARAM...).
      *
-     * @param arg coluna/parametro.
+     * @param arg coluna/arrayOf(parametro...).
      *
      * @return clause atual.
      */
@@ -42,7 +42,7 @@ class Clause
      * Constroi a clausula COLUMN IN(PARAM...).
      *
      * @param predicate AND/OR
-     * @param arg coluna/parametro.
+     * @param arg coluna/arrayOf(parametro...).
      *
      * @return clause atual.
      */

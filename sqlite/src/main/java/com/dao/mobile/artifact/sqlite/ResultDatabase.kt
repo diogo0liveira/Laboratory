@@ -2,7 +2,6 @@
 
 package com.dao.mobile.artifact.sqlite
 
-import com.dao.mobile.artifact.common.numbers.isNegative
 import com.dao.mobile.artifact.common.numbers.isPositive
 
 /**
@@ -108,7 +107,8 @@ class ResultDatabase(private val action: Action)
     fun forStmInsert(id: Long)
     {
         rows.add(id)
-        this.success = id.isNegative()
+        this.count = rows.size
+        this.success = id.isPositive()
     }
 
     /**
