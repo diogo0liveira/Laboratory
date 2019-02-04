@@ -41,12 +41,16 @@ ext {
 
     materialVersion = '1.1.0-alpha02'
     appcompatVersion = '1.1.0-alpha01'
+    recyclerviewVersion = '1.1.0-alpha02'
     constraintlayoutVersion = '2.0.0-alpha3'
+
+    /* External */
+    guavaVersion = '27.0.1-jre'
 
     /* Test */
     extJunitVersion = '1.1.0'
     junitVersion = '4.13-beta-1'
-    espressoCoreVersion = '3.1.1'
+    espressoCoreVersion = '3.1.2-alpha01'
 
     mockitoCoreVersion = '2.21.0'
     mockitoAndroidVersion = '2.21.0'

@@ -1,1 +1,1 @@
-include ':app', ':common', ':common-v21', ':designer', ':designer-v21', ':sqlite'
+include ':app', ':common', ':common-v21', ':design', ':design-v21', ':sqlite'

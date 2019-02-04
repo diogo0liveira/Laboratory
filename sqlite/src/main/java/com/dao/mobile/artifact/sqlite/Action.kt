@@ -1,8 +1,9 @@
 package com.dao.mobile.artifact.sqlite
 
 /**
- * Created in 16/01/19 12:25.
+ * Tipo de operação executada pelo banco.
  *
+ * Created in 16/01/19 12:25.
  * @author Diogo Oliveira.
  */
 enum class Action(val value: String)
