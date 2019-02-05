@@ -2,8 +2,6 @@ package com.dao.mobile.artifact.design.list
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
 
 
 /**
@@ -12,6 +10,4 @@ import android.icu.lang.UCharacter.GraphemeClusterBreak.T
  * @author Diogo Oliveira.
  */
 @Parcelize
-class Restore<T : Parcelable>(item: T, position: Int): Parcelable
-{
-}
+data class Restore<T : Parcelable>(var item: T, var position: Int): Parcelable

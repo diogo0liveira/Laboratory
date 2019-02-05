@@ -9,7 +9,6 @@ import kotlinx.android.parcel.Parcelize
  *
  * @author Diogo Oliveira.
  */
-
 @Parcelize
 class MultiChoiceSelector() : Parcelable
 {
