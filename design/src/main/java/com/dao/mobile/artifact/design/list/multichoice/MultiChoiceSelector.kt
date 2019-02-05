@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
  * @author Diogo Oliveira.
  */
 @Parcelize
-class MultiChoiceSelector() : Parcelable
+class MultiChoiceSelector : Parcelable
 {
     private var selecteds = SparseBooleanArray(0)
     private var countSelected = 0

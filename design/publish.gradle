@@ -1,5 +1,5 @@
 ext {
-    bintrayName = 'Design'
+    bintrayName = 'design'
     bintrayRepository = 'android'
     bintrayDescription = 'Implementações para componentes Android.'
 
