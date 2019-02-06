@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.dao.mobile.laboratory.app.R
+import com.dao.mobile.laboratory.app.sqlite.data.User
 import kotlinx.android.synthetic.main.activity_sqlite.*
 
 /**
@@ -41,6 +42,12 @@ class SqliteActivity : AppCompatActivity(), View.OnClickListener
 
     private fun runSimple()
     {
-        userDataSource.getUsers()
+        val users: List<User> = userDataSource.getUsers()
+        inputTextConsole.text?.clear()
+
+        users.forEach {
+            inputTextConsole.append(it.toString())
+            inputTextConsole.append("\n")
+        }
     }
 }

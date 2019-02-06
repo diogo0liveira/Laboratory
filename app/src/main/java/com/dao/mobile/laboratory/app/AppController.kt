@@ -8,7 +8,7 @@ import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService
  *
  * @author Diogo Oliveira.
  */
-class AppController: Application()
+class AppController : Application()
 {
     override fun onCreate()
     {
@@ -20,7 +20,8 @@ class AppController: Application()
         }
     }
 
-    override fun onTerminate() {
+    override fun onTerminate()
+    {
         SQLiteStudioService.instance().stop()
         super.onTerminate()
     }
