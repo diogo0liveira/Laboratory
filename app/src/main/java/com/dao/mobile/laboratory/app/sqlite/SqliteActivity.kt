@@ -35,7 +35,7 @@ class SqliteActivity : AppCompatActivity(), View.OnClickListener
 
     private fun initializeView()
     {
-        userDataSource = UserDataSource(this)
+        userDataSource = UserDataSource()
         buttonRun.setOnClickListener(this)
     }
 

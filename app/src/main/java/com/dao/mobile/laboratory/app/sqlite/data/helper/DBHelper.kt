@@ -1,8 +1,8 @@
 package com.dao.mobile.laboratory.app.sqlite.data.helper
 
 import android.content.ContentValues
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import com.dao.mobile.artifact.sqlite.helper.DBConnectionHelper
 import org.jetbrains.anko.db.*
 import kotlin.random.Random
 
@@ -14,7 +14,7 @@ import kotlin.random.Random
 private const val DB_NAME = "UserBook.db"
 private const val DB_VERSION = 1
 
-abstract class DBHelper(context: Context) : ManagedSQLiteOpenHelper(context, DB_NAME, null, DB_VERSION)
+abstract class DBHelper<T>(table: String) : DBConnectionHelper<T>(DB_NAME, DB_VERSION, table, true)
 {
     override fun onCreate(database: SQLiteDatabase)
     {

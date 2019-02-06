@@ -1,4 +1,4 @@
-@file:Suppress("unused", "UNUSED_PARAMETER")
+@file:Suppress("unused", "UNUSED_PARAMETER", "MemberVisibilityCanBePrivate")
 
 package com.dao.mobile.artifact.sqlite.helper
 
@@ -19,15 +19,19 @@ import org.jetbrains.anko.db.*
  * Created in 22/08/18 14:18.
  * @author Diogo Oliveira.
  */
-abstract class DBConnectionHelper<T>(val name: String, val version: Int, private val table: String = "", val logging: Boolean = false)
+abstract class DBConnectionHelper<T>(
+    val name: String,
+    val version: Int,
+    private val table: String = "",
+    internal val logging: Boolean = false)
 {
     private val manager: DBManager by lazy { DBManager.initialize(this) }
 
-    internal abstract fun onCreate(database: SQLiteDatabase)
+    abstract fun onCreate(database: SQLiteDatabase)
 
-    internal fun onConfigure(database: SQLiteDatabase) { }
+    fun onConfigure(database: SQLiteDatabase) { }
 
-    internal abstract fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int)
+    abstract fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int)
 
     /**
      * Cria/ou abre um banco de dados que será usado para leitura.
@@ -192,9 +196,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
     {
         return manager.database.use {
             val clause = constraints(model)
-            select(table).whereArgs(clause.where(), *clause.args()).exec {
-                this.returnToSingle()
-            }
+            select(table).whereArgs(clause.where(), *clause.args()).exec { returnToSingle() }
         }
     }
 
@@ -205,11 +207,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
      */
     fun findAll(): MutableList<T>
     {
-        return manager.database.use {
-            select(table).exec {
-                this.returnToList()
-            }
-        }
+        return manager.database.use { select(table).exec { returnToList() } }
     }
 
     /**
@@ -220,7 +218,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
     /**
      * Preenche um "contentValues" utilizado quando usado inserir ou atualizar dados.
      */
-    protected abstract fun contentValues(model: T, insert: Boolean = false): ContentValues
+    protected open fun contentValues(model: T, insert: Boolean = false): ContentValues { TODO() }
 
     /**
      * Preenche um "Array" utilizado quando usado inserir ou atualizar dados.
@@ -245,7 +243,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         return QueryBuilder(table, manager)
     }
 
-    private fun Cursor.returnToSingle(): T?
+    protected fun Cursor.returnToSingle(): T?
     {
         if(this.moveToFirst() && (this.count == 1))
         {
@@ -255,7 +253,7 @@ abstract class DBConnectionHelper<T>(val name: String, val version: Int, private
         return null
     }
 
-    private fun Cursor.returnToList(): MutableList<T>
+    protected fun Cursor.returnToList(): MutableList<T>
     {
         if(this.moveToFirst())
         {

@@ -94,8 +94,9 @@ object DBManager
         }
     }
 
-    internal class Database(private val helper: DBConnectionHelper<*>) :
-            ManagedSQLiteOpenHelper(ApplicationController.getInstance().getContext(), helper.name, Factory(), version = helper.version)
+    internal class Database(private val helper: DBConnectionHelper<*>) : ManagedSQLiteOpenHelper(
+            ApplicationController.getInstance().getContext(),
+            helper.name, Factory(), version = helper.version)
     {
         override fun onCreate(database: SQLiteDatabase)
         {
