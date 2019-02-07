@@ -1,15 +1,19 @@
 package com.dao.mobile.artifact.common
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.filters.LargeTest
+import androidx.test.filters.SdkSuppress
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiObjectNotFoundException
+import androidx.test.uiautomator.UiSelector
 import com.dao.mobile.artifact.common.helper.ActivityPermissionTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Test
-import androidx.test.rule.GrantPermissionRule
-import org.junit.Rule
 
 
 /**
@@ -17,18 +21,30 @@ import org.junit.Rule
  *
  * @author Diogo Oliveira.
  */
+const val TEXT_ALLOW = "PERMITIR"
+const val TEXT_DENY = "Deny"
+
 @LargeTest
+@SdkSuppress(minSdkVersion = 18)
 class PermissionTest
 {
-    @Rule
-    @JvmField
-    var permissionRule = GrantPermissionRule.grant(android.Manifest.permission.GET_ACCOUNTS)
+//    @Rule
+//    @JvmField
+//    var permissionRule = GrantPermissionRule.grant(android.Manifest.permission.GET_ACCOUNTS)
+
+
+    //https://github.com/Egorand/android-testing-runtime-permissions/blob/master/app/src/androidTest/java/me/egorand/contactssync/tests/ContactsSyncTest.java
+
+    private val TARGET_PACKAGE = InstrumentationRegistry.getInstrumentation().context.packageName
 
     private lateinit var permission: Permission
+    private lateinit var device: UiDevice
 
     @Before
     fun setUp()
     {
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+
         ActivityScenario.launch(ActivityPermissionTest::class.java).use { scenario ->
             scenario.moveToState(Lifecycle.State.RESUMED)
 
@@ -39,7 +55,13 @@ class PermissionTest
     }
 
     @Test
-    fun isPermissionContacts()
+    fun isPermissionContactsTrue()
+    {
+        assertThat(permission.isPermissionContacts(), `is`(true))
+    }
+
+    @Test
+    fun isPermissionContactsFalse()
     {
         assertThat(permission.isPermissionContacts(), `is`(false))
     }
@@ -47,12 +69,19 @@ class PermissionTest
     @Test
     fun askForContactPermission()
     {
-        GrantPermissionRule.grant(android.Manifest.permission.GET_ACCOUNTS).apply {
-            assertThat(permission.isPermissionContacts(), `is`(false))
-        }
-
         permission.contacts()
-//        assertThat(permission.isPermissionContacts(), `is`(false))
+        val allowPermissions = device.findObject(UiSelector().text(TEXT_ALLOW))
+
+        if(allowPermissions.exists())
+        {
+            try
+            {
+                allowPermissions.click()
+            } catch(e: UiObjectNotFoundException)
+            {
+                Log.e("TAG", "No permission dialog found.", e)
+            }
+        }
     }
 
 //    @Test
@@ -104,4 +133,28 @@ class PermissionTest
 //    fun getFragment()
 //    {
 //    }
+
+    private fun allowPermission()
+    {
+        val button = device.findObject(UiSelector().text(TEXT_ALLOW))
+        button.click()
+    }
+
+    private fun denyPermission()
+    {
+        val button = device.findObject(UiSelector().text(TEXT_DENY))
+        button.click()
+    }
+
+
+//    public static void denyCurrentPermissionPermanently(UiDevice device) throws UiObjectNotFoundException {
+//    UiObject neverAskAgainCheckbox = device.findObject(new UiSelector().text(TEXT_NEVER_ASK_AGAIN));
+//    neverAskAgainCheckbox.click();
+//    denyCurrentPermission(device);
+//}
+//
+//    public static void grantPermission(UiDevice device, String permissionTitle) throws UiObjectNotFoundException {
+//    UiObject permissionEntry = device.findObject(new UiSelector().text(permissionTitle));
+//    permissionEntry.click();
+
 }

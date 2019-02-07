@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
     androidTestImplementation "androidx.test.ext:junit:$extJunitVersion"
     androidTestImplementation "org.mockito:mockito-android:$mockitoAndroidVersion"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:$uiautomator"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
 }
 

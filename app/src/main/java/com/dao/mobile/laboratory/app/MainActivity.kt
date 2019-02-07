@@ -1,9 +1,9 @@
 package com.dao.mobile.laboratory.app
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.dao.mobile.laboratory.app.sqlite.SqliteActivity
 import kotlinx.android.synthetic.main.activity_main.*
 

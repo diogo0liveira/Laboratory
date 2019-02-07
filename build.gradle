@@ -51,8 +51,9 @@ ext {
     testRulesVersion = '1.1.1'
     testRunnerVersion = '1.1.2-alpha01'
 
-    extJunitVersion = '1.1.1-alpha01'
+    uiautomator = '2.2.0'
     junitVersion = '4.13-beta-2'
+    extJunitVersion = '1.1.1-alpha01'
     espressoCoreVersion = '3.1.2-alpha01'
 
     mockitoCoreVersion = '2.21.0'

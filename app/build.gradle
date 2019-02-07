@@ -39,6 +39,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$core_ktx"
 
     implementation project(':sqlite')
+    implementation project(':common')
 //    implementation 'com.dao.mobile.artifact:sqlite:1.0.0'
 //    implementation 'com.dao.mobile.artifact:common:1.0.0'
 
