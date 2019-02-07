@@ -1,42 +1,39 @@
 package com.dao.mobile.artifact.common
 
-import android.view.View
-import androidx.test.rule.ActivityTestRule
-import org.hamcrest.CoreMatchers.`is`
+import androidx.lifecycle.Lifecycle
+import androidx.test.core.app.ActivityScenario
+import androidx.test.filters.LargeTest
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.Is.`is`
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 
 /**
  * Created in 05/02/19 12:06.
  *
  * @author Diogo Oliveira.
  */
+@LargeTest
 class PermissionTest
 {
     private lateinit var permission: Permission
 
-    @Rule
-    @JvmField
-    val activityRule = ActivityTestRule(ActivityTest::class.java, false, false)
-
-    @Mock
-    private lateinit var anchor: View
-
     @Before
     fun setUp()
     {
-        MockitoAnnotations.initMocks(this)
-        permission = Permission(activityRule.activity, anchor)
+        ActivityScenario.launch(ActivityTest::class.java).use { scenario ->
+            scenario.moveToState(Lifecycle.State.RESUMED)
+
+            scenario.onActivity { activity ->
+                permission = Permission(activity, activity.findViewById(android.R.id.content))
+            }
+        }
     }
 
     @Test
     fun isPermissionContacts()
     {
-        assertThat(permission.isPermissionContacts(), `is`(true))
+        assertThat(permission.isPermissionContacts(), `is`(false))
     }
 
 //    @Test

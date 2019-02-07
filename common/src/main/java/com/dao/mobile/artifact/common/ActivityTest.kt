@@ -20,6 +20,7 @@ class ActivityTest : AppCompatActivity()
         super.onCreate(savedInstanceState)
         val content = CoordinatorLayout(this)
         content.layoutParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        content.id = android.R.id.content
         setContentView(content)
     }
 }
