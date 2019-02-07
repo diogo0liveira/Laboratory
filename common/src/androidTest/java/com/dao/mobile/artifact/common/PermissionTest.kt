@@ -3,6 +3,7 @@ package com.dao.mobile.artifact.common
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.filters.LargeTest
+import com.dao.mobile.artifact.common.helper.ActivityPermissionTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
@@ -21,7 +22,7 @@ class PermissionTest
     @Before
     fun setUp()
     {
-        ActivityScenario.launch(ActivityTest::class.java).use { scenario ->
+        ActivityScenario.launch(ActivityPermissionTest::class.java).use { scenario ->
             scenario.moveToState(Lifecycle.State.RESUMED)
 
             scenario.onActivity { activity ->

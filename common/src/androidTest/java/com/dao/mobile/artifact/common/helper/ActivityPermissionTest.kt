@@ -1,4 +1,4 @@
-package com.dao.mobile.artifact.common
+package com.dao.mobile.artifact.common.helper
 
 import android.os.Bundle
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -13,7 +13,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
  * @author Diogo Oliveira.
  */
 @RestrictTo(RestrictTo.Scope.TESTS)
-class ActivityTest : AppCompatActivity()
+class ActivityPermissionTest : AppCompatActivity()
 {
     override fun onCreate(savedInstanceState: Bundle?)
     {
