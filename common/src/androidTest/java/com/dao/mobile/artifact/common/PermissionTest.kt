@@ -8,6 +8,9 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Test
+import androidx.test.rule.GrantPermissionRule
+import org.junit.Rule
+
 
 /**
  * Created in 05/02/19 12:06.
@@ -17,6 +20,10 @@ import org.junit.Test
 @LargeTest
 class PermissionTest
 {
+    @Rule
+    @JvmField
+    var permissionRule = GrantPermissionRule.grant(android.Manifest.permission.GET_ACCOUNTS)
+
     private lateinit var permission: Permission
 
     @Before
@@ -35,6 +42,17 @@ class PermissionTest
     fun isPermissionContacts()
     {
         assertThat(permission.isPermissionContacts(), `is`(false))
+    }
+
+    @Test
+    fun askForContactPermission()
+    {
+        GrantPermissionRule.grant(android.Manifest.permission.GET_ACCOUNTS).apply {
+            assertThat(permission.isPermissionContacts(), `is`(false))
+        }
+
+        permission.contacts()
+//        assertThat(permission.isPermissionContacts(), `is`(false))
     }
 
 //    @Test
