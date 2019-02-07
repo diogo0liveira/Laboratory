@@ -6,8 +6,8 @@
 
     <application>
         <activity
-            android:name=".ActivityTest"
-            android:theme="@style/AppTheme">
+            android:name=".helper.ActivityPermissionTest"
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
