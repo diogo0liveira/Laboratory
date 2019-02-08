@@ -1,10 +1,9 @@
 package com.dao.mobile.laboratory.app
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.dao.mobile.laboratory.app.sqlite.SqliteActivity
+import com.dao.mobile.artifact.common.Permission
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -27,7 +26,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         {
             R.id.buttonSqlite ->
             {
-                startActivity(Intent(this, SqliteActivity::class.java))
+//                startActivity(Intent(this, SqliteActivity::class.java))
+                val permission = Permission(this, container)
+                permission.contacts()
             }
         }
     }

@@ -1,19 +1,20 @@
 package com.dao.mobile.artifact.common
 
-import android.util.Log
+import android.Manifest
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.filters.LargeTest
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.UiObjectNotFoundException
 import androidx.test.uiautomator.UiSelector
 import com.dao.mobile.artifact.common.helper.ActivityPermissionTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
+import org.junit.FixMethodOrder
 import org.junit.Test
+import org.junit.runners.MethodSorters
 
 
 /**
@@ -26,16 +27,12 @@ const val TEXT_DENY = "Deny"
 
 @LargeTest
 @SdkSuppress(minSdkVersion = 18)
-class PermissionTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+class PermissionTest : InstrumentationRuleTest()
 {
 //    @Rule
 //    @JvmField
 //    var permissionRule = GrantPermissionRule.grant(android.Manifest.permission.GET_ACCOUNTS)
-
-
-    //https://github.com/Egorand/android-testing-runtime-permissions/blob/master/app/src/androidTest/java/me/egorand/contactssync/tests/ContactsSyncTest.java
-
-    private val TARGET_PACKAGE = InstrumentationRegistry.getInstrumentation().context.packageName
 
     private lateinit var permission: Permission
     private lateinit var device: UiDevice
@@ -45,45 +42,53 @@ class PermissionTest
     {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
+//        ActivityScenario.launch(ActivityPermissionTest::class.java).use { scenario ->
+//            scenario.moveToState(Lifecycle.State.RESUMED)
+//
+//            scenario.onActivity { activity ->
+//                permission = Permission(activity, activity.findViewById(android.R.id.content))
+//            }
+//        }
+    }
+
+    @Test
+    fun a_isPermissionContactsTrue()
+    {
+//        grantPermission(Manifest.permission.GET_ACCOUNTS)
+//        assertThat(permission.isPermissionContacts(), `is`(true))
+
+        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
+
         ActivityScenario.launch(ActivityPermissionTest::class.java).use { scenario ->
             scenario.moveToState(Lifecycle.State.RESUMED)
 
             scenario.onActivity { activity ->
+                automation.executeShellCommand("pm grant ${InstrumentationRegistry.getInstrumentation().context.packageName} ${Manifest.permission.GET_ACCOUNTS}")
                 permission = Permission(activity, activity.findViewById(android.R.id.content))
+                assertThat(permission.isPermissionContacts(), `is`(true))
             }
         }
     }
 
     @Test
-    fun isPermissionContactsTrue()
+    fun b_sPermissionContactsFalse()
     {
-        assertThat(permission.isPermissionContacts(), `is`(true))
-    }
+//        revokePermission(Manifest.permission.GET_ACCOUNTS)
+//        assertThat(permission.isPermissionContacts(), `is`(false))
 
-    @Test
-    fun isPermissionContactsFalse()
-    {
-        assertThat(permission.isPermissionContacts(), `is`(false))
-    }
+        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
 
-    @Test
-    fun askForContactPermission()
-    {
-        permission.contacts()
-        val allowPermissions = device.findObject(UiSelector().text(TEXT_ALLOW))
+        ActivityScenario.launch(ActivityPermissionTest::class.java).use { scenario ->
+            scenario.moveToState(Lifecycle.State.RESUMED)
 
-        if(allowPermissions.exists())
-        {
-            try
-            {
-                allowPermissions.click()
-            } catch(e: UiObjectNotFoundException)
-            {
-                Log.e("TAG", "No permission dialog found.", e)
+            scenario.onActivity { activity ->
+                automation.executeShellCommand("pm revoke ${InstrumentationRegistry.getInstrumentation().context.packageName} ${Manifest.permission.GET_ACCOUNTS}")
+                permission = Permission(activity, activity.findViewById(android.R.id.content))
+                assertThat(permission.isPermissionContacts(), `is`(false))
             }
         }
     }
-
+//
 //    @Test
 //    fun isPermissionCamera()
 //    {
@@ -98,12 +103,27 @@ class PermissionTest
 //    fun isPermissionLocation()
 //    {
 //    }
-//
+
 //    @Test
 //    fun contacts()
 //    {
-//    }
+////        revokePermission(Manifest.permission.GET_ACCOUNTS)
+//        device.executeShellCommand("pm revoke ${InstrumentationRegistry.getInstrumentation().componentName.className} $permission")
 //
+//        ActivityScenario.launch(ActivityPermissionTest::class.java).use { scenario ->
+//            scenario.moveToState(Lifecycle.State.RESUMED)
+//
+//            scenario.onActivity { activity ->
+//                permission = Permission(activity, activity.findViewById(android.R.id.content))
+//
+//                permission.contacts()
+//                val allowPermissions = device.findObject(UiSelector().text(TEXT_ALLOW))
+//                assertThat(allowPermissions.exists(), `is`(true))
+//                allowPermissions.click()
+//            }
+//        }
+//    }
+
 //    @Test
 //    fun camera()
 //    {
@@ -156,5 +176,4 @@ class PermissionTest
 //    public static void grantPermission(UiDevice device, String permissionTitle) throws UiObjectNotFoundException {
 //    UiObject permissionEntry = device.findObject(new UiSelector().text(permissionTitle));
 //    permissionEntry.click();
-
 }

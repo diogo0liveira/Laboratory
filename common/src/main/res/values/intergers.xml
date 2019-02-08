@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <integer name="cmon_request_camera">1</integer>
+    <integer name="cmon_request_contacts">2</integer>
+    <integer name="cmon_request_location">3</integer>
+    <integer name="cmon_request_storage">4</integer>
+    <integer name="cmon_request_multi_permissions">5</integer>
+</resources>

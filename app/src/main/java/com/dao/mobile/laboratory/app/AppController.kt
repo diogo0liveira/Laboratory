@@ -1,6 +1,6 @@
 package com.dao.mobile.laboratory.app
 
-import android.app.Application
+import com.dao.mobile.artifact.common.ApplicationController
 import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService
 
 /**
@@ -8,7 +8,7 @@ import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService
  *
  * @author Diogo Oliveira.
  */
-class AppController : Application()
+class AppController : ApplicationController()
 {
     override fun onCreate()
     {

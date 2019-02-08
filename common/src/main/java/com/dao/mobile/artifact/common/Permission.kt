@@ -13,12 +13,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
-const val REQUEST_CONTACTS = 1
-const val REQUEST_CAMERA = 2
-const val REQUEST_LOCATION = 3
-const val REQUEST_STORAGE = 4
-const val REQUEST_MULTIPLE_PERMISSIONS = 5
-
 const val CAMERA = Manifest.permission.CAMERA
 const val CONTACTS = Manifest.permission.GET_ACCOUNTS
 const val LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
@@ -270,15 +264,15 @@ class Permission private constructor(val activity: AppCompatActivity?, val fragm
                 }
                 REQUEST_CAMERA ->
                 {
-//                    camera()
+                    camera()
                 }
                 REQUEST_STORAGE ->
                 {
-//                    storage()
+                    storage()
                 }
                 REQUEST_LOCATION ->
                 {
-//                    location()
+                    location()
                 }
             }
         }
@@ -311,5 +305,16 @@ class Permission private constructor(val activity: AppCompatActivity?, val fragm
         }
 
         fragment?.requestPermissions(permissions, requestCode)
+    }
+
+    companion object
+    {
+        private val resources = ApplicationController.getInstance().resources
+
+        val REQUEST_CONTACTS = resources.getInteger(R.integer.cmon_request_camera)
+        val REQUEST_CAMERA = resources.getInteger(R.integer.cmon_request_contacts)
+        val REQUEST_LOCATION = resources.getInteger(R.integer.cmon_request_location)
+        val REQUEST_STORAGE = resources.getInteger(R.integer.cmon_request_storage)
+        val REQUEST_MULTIPLE_PERMISSIONS = resources.getInteger(R.integer.cmon_request_multi_permissions)
     }
 }

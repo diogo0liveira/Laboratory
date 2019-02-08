@@ -76,6 +76,11 @@ object Logger
         print(tag, message, log = Log::e)
     }
 
+    fun e(message: String, throwable: Throwable)
+    {
+        print(tag, message, throwable, log = Log::e)
+    }
+
     fun e(tag: String, message: String, throwable: Throwable)
     {
         print(tag, message, throwable, Log::e)
