@@ -12,9 +12,7 @@ import com.dao.mobile.artifact.common.helper.ActivityPermissionTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
-import org.junit.FixMethodOrder
 import org.junit.Test
-import org.junit.runners.MethodSorters
 
 
 /**
@@ -27,7 +25,7 @@ const val TEXT_DENY = "Deny"
 
 @LargeTest
 @SdkSuppress(minSdkVersion = 18)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class PermissionTest : InstrumentationRuleTest()
 {
 //    @Rule
@@ -52,7 +50,7 @@ class PermissionTest : InstrumentationRuleTest()
     }
 
     @Test
-    fun a_isPermissionContactsTrue()
+    fun isPermissionContactsTrue()
     {
 //        grantPermission(Manifest.permission.GET_ACCOUNTS)
 //        assertThat(permission.isPermissionContacts(), `is`(true))
@@ -63,31 +61,30 @@ class PermissionTest : InstrumentationRuleTest()
             scenario.moveToState(Lifecycle.State.RESUMED)
 
             scenario.onActivity { activity ->
-                automation.executeShellCommand("pm grant ${InstrumentationRegistry.getInstrumentation().context.packageName} ${Manifest.permission.GET_ACCOUNTS}")
+//                automation.executeShellCommand("pm grant ${InstrumentationRegistry.getInstrumentation().context.packageName} ${Manifest.permission.GET_ACCOUNTS}")
                 permission = Permission(activity, activity.findViewById(android.R.id.content))
                 assertThat(permission.isPermissionContacts(), `is`(true))
             }
         }
     }
 
-    @Test
-    fun b_sPermissionContactsFalse()
-    {
-//        revokePermission(Manifest.permission.GET_ACCOUNTS)
-//        assertThat(permission.isPermissionContacts(), `is`(false))
-
-        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
-
-        ActivityScenario.launch(ActivityPermissionTest::class.java).use { scenario ->
-            scenario.moveToState(Lifecycle.State.RESUMED)
-
-            scenario.onActivity { activity ->
-                automation.executeShellCommand("pm revoke ${InstrumentationRegistry.getInstrumentation().context.packageName} ${Manifest.permission.GET_ACCOUNTS}")
-                permission = Permission(activity, activity.findViewById(android.R.id.content))
-                assertThat(permission.isPermissionContacts(), `is`(false))
-            }
-        }
-    }
+//    @Test
+//    fun isPermissionContactsFalse()
+//    {
+////        revokePermission(Manifest.permission.GET_ACCOUNTS)
+////        assertThat(permission.isPermissionContacts(), `is`(false))
+//
+//        ActivityScenario.launch(ActivityPermissionTest::class.java).use { scenario ->
+//            scenario.moveToState(Lifecycle.State.RESUMED)
+//
+//            scenario.onActivity { activity ->
+//                val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
+//                automation.executeShellCommand("pm revoke ${InstrumentationRegistry.getInstrumentation().context.packageName} ${Manifest.permission.GET_ACCOUNTS}")
+//                permission = Permission(activity, activity.findViewById(android.R.id.content))
+//                assertThat(permission.isPermissionContacts(), `is`(false))
+//            }
+//        }
+//    }
 //
 //    @Test
 //    fun isPermissionCamera()

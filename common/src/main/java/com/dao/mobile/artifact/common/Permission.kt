@@ -14,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 const val CAMERA = Manifest.permission.CAMERA
-const val CONTACTS = Manifest.permission.GET_ACCOUNTS
+const val CONTACTS = Manifest.permission.READ_CONTACTS
 const val LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
 const val STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
@@ -37,7 +37,8 @@ private const val PERMISSION_LOCATION_SHOW = "PERMISSION_LOCATION_SHOW"
  */
 class Permission private constructor(val activity: AppCompatActivity?, val fragment: Fragment?, private val anchor: View)
 {
-    private val preferences: SharedPreferences = getContext().getSharedPreferences(PREFERENCE_PERMISSION, Context.MODE_PRIVATE)
+    private val preferences: SharedPreferences =
+        getContext().getSharedPreferences(PREFERENCE_PERMISSION, Context.MODE_PRIVATE)
     private var repeat: Boolean = false
 
     constructor(activity: AppCompatActivity, anchor: View) : this(activity, null, anchor)
@@ -49,7 +50,7 @@ class Permission private constructor(val activity: AppCompatActivity?, val fragm
      *
      * @return (true se permissão concedida)
      */
-    fun isPermissionContacts() = checkSelfPermission(CONTACTS)
+    fun isPermissionContacts(type: Type) = checkSelfPermission(CONTACTS)
 
     /**
      * Verifica se tem permissão para utilizar a camera.
@@ -84,19 +85,19 @@ class Permission private constructor(val activity: AppCompatActivity?, val fragm
                 showDialogInformative(R.string.permission_cmon_dialog_contacts, REQUEST_CONTACTS)
                 reportPreferences(PERMISSION_CAMERA_SHOW)
                 repeat = false
-            }
-            else
+            } else
             {
                 requestPermissions(PERMISSIONS_CONTACTS, REQUEST_CONTACTS)
             }
-        }
-        else
+        } else
         {
             if(preferences.getBoolean(PERMISSION_CONTACTS_SHOW, false))
             {
-                showSnackbarKnowMore(R.string.permission_cmon_rationale_account, R.string.permission_cmon_dialog_contacts_accept)
-            }
-            else
+                showSnackbarKnowMore(
+                    R.string.permission_cmon_rationale_account,
+                    R.string.permission_cmon_dialog_contacts_accept
+                )
+            } else
             {
                 requestPermissions(PERMISSIONS_CONTACTS, REQUEST_CONTACTS)
             }
@@ -115,19 +116,19 @@ class Permission private constructor(val activity: AppCompatActivity?, val fragm
                 showDialogInformative(R.string.permission_cmon_dialog_camera, REQUEST_CAMERA)
                 reportPreferences(PERMISSION_CAMERA_SHOW)
                 repeat = false
-            }
-            else
+            } else
             {
                 requestPermissions(PERMISSIONS_CAMERA, REQUEST_CAMERA)
             }
-        }
-        else
+        } else
         {
             if(preferences.contains(PERMISSION_CAMERA_SHOW) && preferences.getBoolean(PERMISSION_CAMERA_SHOW, false))
             {
-                showSnackbarKnowMore(R.string.permission_cmon_rationale_camera, R.string.permission_cmon_dialog_camera_accept)
-            }
-            else
+                showSnackbarKnowMore(
+                    R.string.permission_cmon_rationale_camera,
+                    R.string.permission_cmon_dialog_camera_accept
+                )
+            } else
             {
                 requestPermissions(PERMISSIONS_CAMERA, REQUEST_CAMERA)
             }
@@ -146,19 +147,19 @@ class Permission private constructor(val activity: AppCompatActivity?, val fragm
                 showDialogInformative(R.string.permission_cmon_dialog_storage, REQUEST_STORAGE)
                 reportPreferences(PERMISSION_CAMERA_SHOW)
                 repeat = false
-            }
-            else
+            } else
             {
                 requestPermissions(PERMISSIONS_STORAGE, REQUEST_STORAGE)
             }
-        }
-        else
+        } else
         {
             if(preferences.getBoolean(PERMISSION_STORAGE_SHOW, false))
             {
-                showSnackbarKnowMore(R.string.permission_cmon_rationale_storage, R.string.permission_cmon_dialog_storage_accept)
-            }
-            else
+                showSnackbarKnowMore(
+                    R.string.permission_cmon_rationale_storage,
+                    R.string.permission_cmon_dialog_storage_accept
+                )
+            } else
             {
                 requestPermissions(PERMISSIONS_STORAGE, REQUEST_STORAGE)
             }
@@ -177,19 +178,19 @@ class Permission private constructor(val activity: AppCompatActivity?, val fragm
                 showDialogInformative(R.string.permission_cmon_dialog_location, REQUEST_LOCATION)
                 reportPreferences(PERMISSION_CAMERA_SHOW)
                 repeat = false
-            }
-            else
+            } else
             {
                 requestPermissions(PERMISSIONS_LOCATION, REQUEST_LOCATION)
             }
-        }
-        else
+        } else
         {
             if(preferences.getBoolean(PERMISSION_LOCATION_SHOW, false))
             {
-                showSnackbarKnowMore(R.string.permission_cmon_rationale_location, R.string.permission_cmon_dialog_location_accept)
-            }
-            else
+                showSnackbarKnowMore(
+                    R.string.permission_cmon_rationale_location,
+                    R.string.permission_cmon_dialog_location_accept
+                )
+            } else
             {
                 requestPermissions(PERMISSIONS_LOCATION, REQUEST_LOCATION)
             }
@@ -247,7 +248,8 @@ class Permission private constructor(val activity: AppCompatActivity?, val fragm
 
     private fun showSnackbarKnowMore(message: Int, because: Int)
     {
-        Snackbar.make(anchor, message, Snackbar.LENGTH_LONG).setAction(R.string.permission_cmon_snackbar_know_more) { showDialogExplicative(because) }.show()
+        Snackbar.make(anchor, message, Snackbar.LENGTH_LONG)
+            .setAction(R.string.permission_cmon_snackbar_know_more) { showDialogExplicative(because) }.show()
     }
 
     private fun showDialogInformative(message: Int, request: Int)
@@ -316,5 +318,13 @@ class Permission private constructor(val activity: AppCompatActivity?, val fragm
         val REQUEST_LOCATION = resources.getInteger(R.integer.cmon_request_location)
         val REQUEST_STORAGE = resources.getInteger(R.integer.cmon_request_storage)
         val REQUEST_MULTIPLE_PERMISSIONS = resources.getInteger(R.integer.cmon_request_multi_permissions)
+    }
+
+    sealed class Type
+    {
+        enum class Contacts
+        {
+            GET, READ, WRITE
+        }
     }
 }

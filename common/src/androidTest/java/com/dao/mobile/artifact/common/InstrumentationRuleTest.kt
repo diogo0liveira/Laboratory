@@ -44,13 +44,13 @@ open class InstrumentationRuleTest
         @Throws(IOException::class)
         fun grantPermission(permission: String)
         {
-            automation.executeShellCommand("pm grant $packageName $permission")
+//            automation.executeShellCommand("pm grant $packageName $permission")
         }
 
         @Throws(IOException::class)
         fun revokePermission(permission: String)
         {
-            automation.executeShellCommand("pm revoke $packageName $permission")
+//            automation.executeShellCommand("pm revoke $packageName $permission")
         }
 
         private fun setSystemAnimationsScale(enable: Boolean)
