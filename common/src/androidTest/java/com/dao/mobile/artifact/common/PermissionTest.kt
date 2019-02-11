@@ -63,7 +63,7 @@ class PermissionTest : InstrumentationRuleTest()
             scenario.onActivity { activity ->
 //                automation.executeShellCommand("pm grant ${InstrumentationRegistry.getInstrumentation().context.packageName} ${Manifest.permission.GET_ACCOUNTS}")
                 permission = Permission(activity, activity.findViewById(android.R.id.content))
-                assertThat(permission.isPermissionContacts(), `is`(true))
+                assertThat(permission.isPermissionContacts(Manifest.permission.READ_CALENDAR), `is`(true))
             }
         }
     }
