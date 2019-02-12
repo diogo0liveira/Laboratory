@@ -3,7 +3,7 @@ package com.dao.mobile.laboratory.app
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.dao.mobile.artifact.common.Permission
+import com.dao.mobile.artifact.common.permission.Permission
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener
 {
+    private val permission: Permission by lazy { Permission(this, container) }
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -27,8 +29,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
             R.id.buttonSqlite ->
             {
 //                startActivity(Intent(this, SqliteActivity::class.java))
-                val permission = Permission(this, container)
-                permission.contacts()
+
+                if(permission.isPermissionContacts())
+                {
+                }
+                else
+                {
+                    permission.contacts()
+                }
             }
         }
     }
@@ -36,5 +44,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
     private fun initializeView()
     {
         buttonSqlite.setOnClickListener(this)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        permission.accepted(requestCode, grantResults)
     }
 }
