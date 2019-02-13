@@ -14,12 +14,7 @@ import kotlinx.android.synthetic.main.activity_permission.*
  */
 class PermissionActivity : AppCompatActivity(), View.OnClickListener
 {
-    private val permission: Permission by lazy {
-        Permission(
-            this,
-            container
-        )
-    }
+    private val permission: Permission by lazy { Permission(this, container) }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -31,7 +26,12 @@ class PermissionActivity : AppCompatActivity(), View.OnClickListener
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permission.accepted(requestCode, grantResults)
+        val granted = permission.accepted(requestCode, permissions, grantResults)
+
+        if(granted)
+        {
+            grantPermission()
+        }
     }
 
     override fun onClick(view: View)
@@ -52,13 +52,13 @@ class PermissionActivity : AppCompatActivity(), View.OnClickListener
 
     private fun grantPermission()
     {
-        if(permission.isPermissionMicrophone())
+        if(permission.hasPermissionContacts())
         {
             textLabelHasPermission.visibility = View.VISIBLE
         }
         else
         {
-            permission.microphone()
+            permission.
         }
     }
 }

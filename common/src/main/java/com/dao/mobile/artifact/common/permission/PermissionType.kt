@@ -11,12 +11,7 @@ import androidx.annotation.RequiresApi
  */
 internal interface Type
 {
-    fun get(): String
-
-    object None : Type
-    {
-        override fun get() = ""
-    }
+    fun value(): String
 }
 
 internal const val CAMERA = Manifest.permission.CAMERA
@@ -30,12 +25,12 @@ enum class Calendar : Type
 {
     READ
     {
-        override fun get() = Manifest.permission.READ_CALENDAR
+        override fun value() = Manifest.permission.READ_CALENDAR
 
     },
     WRITE
     {
-        override fun get() = Manifest.permission.WRITE_CALENDAR
+        override fun value() = Manifest.permission.WRITE_CALENDAR
     };
 }
 
@@ -43,17 +38,17 @@ enum class Contacts : Type
 {
     GET
     {
-        override fun get() = Manifest.permission.GET_ACCOUNTS
+        override fun value() = Manifest.permission.GET_ACCOUNTS
 
     },
     READ
     {
-        override fun get() = Manifest.permission.READ_CONTACTS
+        override fun value() = Manifest.permission.READ_CONTACTS
 
     },
     WRITE
     {
-        override fun get() = Manifest.permission.WRITE_CONTACTS
+        override fun value() = Manifest.permission.WRITE_CONTACTS
     };
 }
 
@@ -61,12 +56,12 @@ enum class Location : Type
 {
     ACCESS_FINE
     {
-        override fun get() = Manifest.permission.ACCESS_FINE_LOCATION
+        override fun value() = Manifest.permission.ACCESS_FINE_LOCATION
 
     },
     ACCESS_COARSE
     {
-        override fun get() = Manifest.permission.ACCESS_COARSE_LOCATION
+        override fun value() = Manifest.permission.ACCESS_COARSE_LOCATION
     };
 }
 
@@ -74,12 +69,12 @@ enum class Storage : Type
 {
     READ
     {
-        override fun get() = Manifest.permission.READ_EXTERNAL_STORAGE
+        override fun value() = Manifest.permission.READ_EXTERNAL_STORAGE
 
     },
     WRITE
     {
-        override fun get() = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        override fun value() = Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 }
 
@@ -87,37 +82,37 @@ enum class Phone : Type
 {
     READ_PHONE_STATE
     {
-        override fun get() = Manifest.permission.READ_PHONE_STATE
+        override fun value() = Manifest.permission.READ_PHONE_STATE
 
     },
     CALL_PHONE
     {
-        override fun get() = Manifest.permission.CALL_PHONE
+        override fun value() = Manifest.permission.CALL_PHONE
 
     },
     READ_CALL_LOG
     {
-        override fun get() = Manifest.permission.READ_CALL_LOG
+        override fun value() = Manifest.permission.READ_CALL_LOG
 
     },
     WRITE_CALL_LOG
     {
-        override fun get() = Manifest.permission.WRITE_CALL_LOG
+        override fun value() = Manifest.permission.WRITE_CALL_LOG
 
     },
     ADD_VOICEMAIL
     {
-        override fun get() = Manifest.permission.ADD_VOICEMAIL
+        override fun value() = Manifest.permission.ADD_VOICEMAIL
 
     },
     USE_SIP
     {
-        override fun get() = Manifest.permission.USE_SIP
+        override fun value() = Manifest.permission.USE_SIP
 
     },
     PROCESS_OUTGOING_CALLS
     {
-        override fun get() = Manifest.permission.PROCESS_OUTGOING_CALLS
+        override fun value() = Manifest.permission.PROCESS_OUTGOING_CALLS
     };
 }
 
@@ -125,21 +120,21 @@ enum class Sms : Type
 {
     SEND_SMS
     {
-        override fun get() = Manifest.permission.SEND_SMS
+        override fun value() = Manifest.permission.SEND_SMS
 
     },
     READ_SMS
     {
-        override fun get() = Manifest.permission.READ_SMS
+        override fun value() = Manifest.permission.READ_SMS
 
     },
     RECEIVE_WAP_PUSH
     {
-        override fun get() = Manifest.permission.RECEIVE_WAP_PUSH
+        override fun value() = Manifest.permission.RECEIVE_WAP_PUSH
 
     },
     RECEIVE_MMS
     {
-        override fun get() = Manifest.permission.RECEIVE_MMS
+        override fun value() = Manifest.permission.RECEIVE_MMS
     };
 }

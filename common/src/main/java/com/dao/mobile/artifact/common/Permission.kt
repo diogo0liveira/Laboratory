@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.dao.mobile.artifact.common.permission.*
 import com.google.android.material.snackbar.Snackbar
+import androidx.core.app.ActivityCompat.requestPermissions
+
+
 
 /**
  * Created in 12/02/19 16:53.
@@ -20,47 +23,42 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
 
     constructor(fragment: Fragment, anchor: View) : this(null, fragment, anchor)
 
-    private val helper: PermissionHelper by lazy {
-        PermissionHelper(
-            activity,
-            fragment
-        )
-    }
+    private val helper: PermissionHelper by lazy { PermissionHelper(activity, fragment) }
 
     /**
      * Verifica se tem permissão para acesso a conta.
      *
      * @return (true se permissão concedida)
      */
-    fun isPermissionContacts(type: Contacts = Contacts.GET) = helper.checkSelfPermission(type.get())
+    fun hasPermissionContacts(type: Contacts = Contacts.GET) = helper.checkSelfPermission(type.value())
 
     /**
      * Verifica se tem permissão para utilizar a camera.
      *
      * @return (true se permissão concedida)
      */
-    fun isPermissionCamera() = helper.checkSelfPermission(CAMERA)
+    fun hasPermissionCamera() = helper.checkSelfPermission(CAMERA)
 
     /**
      * Verifica se tem permissão para utilizar a localização.
      *
      * @return (true se permissão concedida)
      */
-    fun isPermissionLocation(type: Location = Location.ACCESS_FINE) = helper.checkSelfPermission(type.get())
+    fun isPermissionLocation(type: Location = Location.ACCESS_FINE) = helper.checkSelfPermission(type.value())
 
     /**
      * Verifica se tem permissão para utilizar o microfone.
      *
      * @return (true se permissão concedida)
      */
-    fun isPermissionMicrophone() = helper.checkSelfPermission(MICROPHONE)
+    fun hasPermissionMicrophone() = helper.checkSelfPermission(MICROPHONE)
 
     /**
      * Verifica se tem permissão para recursos de telefonia.
      *
      * @return (true se permissão concedida)
      */
-    fun isPermissionPhone(type: Phone = Phone.CALL_PHONE) = helper.checkSelfPermission(type.get())
+    fun hasPermissionPhone(type: Phone = Phone.CALL_PHONE) = helper.checkSelfPermission(type.value())
 
     /**
      * Verifica se tem permissão para acesso ao sensores.
@@ -68,36 +66,32 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
      * @return (true se permissão concedida)
      */
     @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
-    fun isPermissionSensors() = helper.checkSelfPermission(SENSORS)
+    fun hasPermissionSensors() = helper.checkSelfPermission(SENSORS)
 
     /**
      * Verifica se tem permissão para recursos de SMS.
      *
      * @return (true se permissão concedida)
      */
-    fun isPermissionSms(type: Sms = Sms.READ_SMS) = helper.checkSelfPermission(type.get())
+    fun hasPermissionSms(type: Sms = Sms.READ_SMS) = helper.checkSelfPermission(type.value())
 
     /**
      * Verifica se tem permissão para escrever no disco.
      *
      * @return (true se permissão concedida)
      */
-    fun isPermissionStorage(type: Storage = Storage.READ) = helper.checkSelfPermission(type.get())
+    fun hasPermissionStorage(type: Storage = Storage.READ) = helper.checkSelfPermission(type.value())
 
     /**
      * Solicita a permissão para o usuário para utilizar a conta.
      */
     fun contacts(type: Contacts = Contacts.GET)
     {
-        helper.grandPermission(type.get(),
-            REQUEST_CONTACTS, object :
-                PermissionHelper.Callback
+        helper.grandPermission(type.value(), REQUEST_CONTACTS, object : PermissionHelper.Callback
         {
             override fun showDialog()
             {
-                showDialogInformative(R.string.permission_cmon_dialog_contacts,
-                    REQUEST_CONTACTS
-                )
+                showDialogInformative(R.string.permission_cmon_dialog_contacts) { contacts(type) }
             }
 
             override fun showSnackbar()
@@ -115,16 +109,11 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
      */
     fun camera()
     {
-        helper.grandPermission(
-            CAMERA,
-            REQUEST_CAMERA, object :
-                PermissionHelper.Callback
+        helper.grandPermission(CAMERA, REQUEST_CAMERA, object : PermissionHelper.Callback
         {
             override fun showDialog()
             {
-                showDialogInformative(R.string.permission_cmon_dialog_camera,
-                    REQUEST_CAMERA
-                )
+                showDialogInformative(R.string.permission_cmon_dialog_camera) { camera() }
             }
 
             override fun showSnackbar()
@@ -142,15 +131,11 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
      */
     fun location(type: Location = Location.ACCESS_FINE)
     {
-        helper.grandPermission(type.get(),
-            REQUEST_LOCATION, object :
-                PermissionHelper.Callback
+        helper.grandPermission(type.value(), REQUEST_LOCATION, object : PermissionHelper.Callback
         {
             override fun showDialog()
             {
-                showDialogInformative(R.string.permission_cmon_dialog_location,
-                    REQUEST_LOCATION
-                )
+                showDialogInformative(R.string.permission_cmon_dialog_location) { location(type) }
             }
 
             override fun showSnackbar()
@@ -164,46 +149,15 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
     }
 
     /**
-     * Solicita a permissão para o usuário para escrever no disco.
-     */
-    fun storage(type: Storage = Storage.READ)
-    {
-        helper.grandPermission(type.get(),
-            REQUEST_STORAGE, object :
-                PermissionHelper.Callback
-        {
-            override fun showDialog()
-            {
-                showDialogInformative(R.string.permission_cmon_dialog_storage,
-                    REQUEST_STORAGE
-                )
-            }
-
-            override fun showSnackbar()
-            {
-                //@formatter:off
-                showSnackbarKnowMore(R.string.permission_cmon_rationale_storage,
-                    R.string.permission_cmon_dialog_storage_accept)
-                //@formatter:on
-            }
-        })
-    }
-
-    /**
      * Solicita a permissão para o usuário para utilizar o microfone.
      */
     fun microphone()
     {
-        helper.grandPermission(
-            MICROPHONE,
-            REQUEST_MICROPHONE, object :
-                PermissionHelper.Callback
+        helper.grandPermission(MICROPHONE, REQUEST_MICROPHONE, object : PermissionHelper.Callback
         {
             override fun showDialog()
             {
-                showDialogInformative(R.string.permission_cmon_dialog_microphone,
-                    REQUEST_MICROPHONE
-                )
+                showDialogInformative(R.string.permission_cmon_dialog_microphone) { microphone() }
             }
 
             override fun showSnackbar()
@@ -216,7 +170,123 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
         })
     }
 
-    fun accepted(requestCode: Int, grantResults: IntArray): Boolean
+    /**
+     * Solicita a permissão para o usuário utilizar recursos de telefonia.
+     */
+    fun phone(type: Phone = Phone.CALL_PHONE)
+    {
+        helper.grandPermission(type.value(), REQUEST_PHONE, object : PermissionHelper.Callback
+        {
+            override fun showDialog()
+            {
+                showDialogInformative(R.string.permission_cmon_dialog_phone) { phone(type) }
+            }
+
+            override fun showSnackbar()
+            {
+                //@formatter:off
+                    showSnackbarKnowMore(R.string.permission_cmon_rationale_phone,
+                        R.string.permission_cmon_dialog_phone_accept)
+                    //@formatter:on
+            }
+        })
+    }
+
+    /**
+     * Solicita a permissão para o usuário para utilizar os sensores.
+     */
+    @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
+    fun sensors()
+    {
+        helper.grandPermission(SENSORS, REQUEST_SENSORS, object : PermissionHelper.Callback
+        {
+            override fun showDialog()
+            {
+                showDialogInformative(R.string.permission_cmon_dialog_sensors) { sensors() }
+            }
+
+            override fun showSnackbar()
+            {
+                //@formatter:off
+                    showSnackbarKnowMore(R.string.permission_cmon_rationale_sensors,
+                        R.string.permission_cmon_dialog_sensors_accept)
+                    //@formatter:on
+            }
+        })
+    }
+
+    /**
+     * Solicita a permissão para o usuário utilizar recursos de SMS.
+     */
+    fun sms(type: Sms = Sms.SEND_SMS)
+    {
+        helper.grandPermission(type.value(), REQUEST_SMS, object : PermissionHelper.Callback
+        {
+            override fun showDialog()
+            {
+                showDialogInformative(R.string.permission_cmon_dialog_sms) { sms(type) }
+            }
+
+            override fun showSnackbar()
+            {
+                //@formatter:off
+                    showSnackbarKnowMore(R.string.permission_cmon_rationale_sms,
+                        R.string.permission_cmon_dialog_sms_accept)
+                    //@formatter:on
+            }
+        })
+    }
+
+    /**
+     * Solicita a permissão para o usuário para escrever no disco.
+     */
+    fun storage(type: Storage = Storage.READ)
+    {
+        helper.grandPermission(type.value(), REQUEST_STORAGE, object : PermissionHelper.Callback
+        {
+            override fun showDialog()
+            {
+                showDialogInformative(R.string.permission_cmon_dialog_storage) { storage(type) }
+            }
+
+            override fun showSnackbar()
+            {
+                //@formatter:off
+                    showSnackbarKnowMore(R.string.permission_cmon_rationale_storage,
+                        R.string.permission_cmon_dialog_storage_accept)
+                    //@formatter:on
+            }
+        })
+    }
+
+    private fun multiplePermissions(vararg permissions: Type)
+    {
+
+//        if(permissions != null)
+//        {
+//            val listPermissionsNeeded = ArrayList(permissions.size)
+//
+//            for(permission in permissions)
+//            {
+//                if(ContextCompat.checkSelfPermission(activity, permission) !== PackageManager.PERMISSION_GRANTED)
+//                {
+//                    listPermissionsNeeded.add(permission)
+//                }
+//            }
+//
+//            if(!listPermissionsNeeded.isEmpty())
+//            {
+//                ActivityCompat.requestPermissions(
+//                    activity,
+//                    listPermissionsNeeded.toTypedArray(),
+//                    REQUEST_MULTIPLE_PERMISSIONS
+//                )
+//            }
+//        }
+    }
+
+
+    fun accepted(requestCode: Int, permissions: Array<out String>, grantResults: IntArray): Boolean
     {
         if(grantResults.isEmpty())
         {
@@ -236,61 +306,85 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
             }
             else
             {
-                for(result in grantResults)
-                {
-                    helper.justify = result == PackageManager.PERMISSION_DENIED
+                helper.justify = grantResults[0] == PackageManager.PERMISSION_DENIED
 
-                    when(requestCode)
+                when(requestCode)
+                {
+                    REQUEST_CONTACTS ->
                     {
-                        REQUEST_CONTACTS ->
+                        if(helper.justify)
                         {
-                            if(helper.justify)
-                            {
-                                contacts()
-                                return false
-                            }
-                        }
-                        REQUEST_CAMERA ->
-                        {
-                            if(helper.justify)
-                            {
-                                camera()
-                                return false
-                            }
-                        }
-                        REQUEST_LOCATION ->
-                        {
-                            if(helper.justify)
-                            {
-                                location()
-                                return false
-                            }
-                        }
-                        REQUEST_MICROPHONE ->
-                        {
-                            if(helper.justify)
-                            {
-                                microphone()
-                                return false
-                            }
-                        }
-                        REQUEST_STORAGE ->
-                        {
-                            if(helper.justify)
-                            {
-                                storage()
-                                return false
-                            }
-                        }
-                        else ->
-                        {
+                            contacts(Contacts.values().find { it.value() == permissions[0] }!!)
                             return false
                         }
+                    }
+                    REQUEST_CAMERA ->
+                    {
+                        if(helper.justify)
+                        {
+                            camera()
+                            return false
+                        }
+                    }
+                    REQUEST_LOCATION ->
+                    {
+                        if(helper.justify)
+                        {
+                            location(Location.values().find { it.value() == permissions[0] }!!)
+                            return false
+                        }
+                    }
+                    REQUEST_MICROPHONE ->
+                    {
+                        if(helper.justify)
+                        {
+                            microphone()
+                            return false
+                        }
+                    }
+                    REQUEST_PHONE ->
+                    {
+                        if(helper.justify)
+                        {
+                            phone(Phone.values().find { it.value() == permissions[0] }!!)
+                            return false
+                        }
+                    }
+                    REQUEST_SENSORS ->
+                    {
+                        if(helper.justify)
+                        {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH)
+                            {
+                                sensors()
+                            }
+                            return false
+                        }
+                    }
+                    REQUEST_SMS ->
+                    {
+                        if(helper.justify)
+                        {
+                            sms(Sms.values().find { it.value() == permissions[0] }!!)
+                            return false
+                        }
+                    }
+                    REQUEST_STORAGE ->
+                    {
+                        if(helper.justify)
+                        {
+                            storage(Storage.values().find { it.value() == permissions[0] }!!)
+                            return false
+                        }
+                    }
+                    else ->
+                    {
+                        return false
                     }
                 }
             }
 
-//            Snackbar.make(anchor, R.string.permission_cmon_accepted, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(anchor, R.string.permission_cmon_accepted, Snackbar.LENGTH_SHORT).show()
             return true
         }
     }
@@ -310,37 +404,11 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
             .setAction(R.string.permission_cmon_snackbar_know_more) { showDialogExplicative(because) }.show()
     }
 
-    private fun showDialogInformative(message: Int, request: Int)
+    private fun showDialogInformative(message: Int, block: () -> Unit)
     {
         val builder = helper.buildDialog()
         builder.setMessage(message)
-
-        builder.setNegativeButton(R.string.permission_cmon_dialog_button_back) { _, _ ->
-            when(request)
-            {
-                REQUEST_CONTACTS ->
-                {
-                    contacts()
-                }
-                REQUEST_CAMERA ->
-                {
-                    camera()
-                }
-                REQUEST_MICROPHONE ->
-                {
-                    microphone()
-                }
-                REQUEST_LOCATION ->
-                {
-                    location()
-                }
-                REQUEST_STORAGE ->
-                {
-                    storage()
-                }
-            }
-        }
-
+        builder.setNegativeButton(R.string.permission_cmon_dialog_button_back) { _, _ -> block() }
         builder.show()
     }
 
@@ -351,8 +419,11 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
         val REQUEST_CONTACTS = resources.getInteger(R.integer.cmon_request_camera)
         val REQUEST_CAMERA = resources.getInteger(R.integer.cmon_request_contacts)
         val REQUEST_LOCATION = resources.getInteger(R.integer.cmon_request_location)
-        val REQUEST_STORAGE = resources.getInteger(R.integer.cmon_request_storage)
         val REQUEST_MICROPHONE = resources.getInteger(R.integer.cmon_request_microphone)
+        val REQUEST_PHONE = resources.getInteger(R.integer.cmon_request_microphone)
+        val REQUEST_STORAGE = resources.getInteger(R.integer.cmon_request_storage)
+        val REQUEST_SENSORS = resources.getInteger(R.integer.cmon_request_sensors)
+        val REQUEST_SMS = resources.getInteger(R.integer.cmon_request_sms)
         val REQUEST_MULTIPLE_PERMISSIONS = resources.getInteger(R.integer.cmon_request_multi_permissions)
     }
 }

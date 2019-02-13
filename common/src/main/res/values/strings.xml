@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!DOCTYPE resources [<!ENTITY settings "\n\n Para permitir, clique em: <b>Configurações > Permissões</b> e ative a opção">]>
+<!DOCTYPE resources [<!ENTITY settings "\n\n Para permitir, clique em: <b>Configurações > Permissões ></b>">]>
 
 <resources>
     <string name="app_cmon_version">Versão: %1$s</string>
@@ -16,18 +16,27 @@
     <string name="permission_cmon_dialog_button_settings">configurações</string>
     <string name="permission_cmon_dialog_contacts">Para prosseguir é necessário permissão para utilizar o gerenciador de contas do dispositivo. Caso contrário não será possivel utilizar está função.</string>
     <string name="permission_cmon_dialog_contacts_accept">É necessário permissão para utilizar o gerenciador de contas. &settings; <b>Contatos</b>.</string>
-    <string name="permission_cmon_dialog_camera">Se você negar acesso a camera do dispositivo, não será possivel utilizar funções como foto, video e etc.</string>
+    <string name="permission_cmon_dialog_camera">Se você negar acesso a camera do dispositivo, não será possível utilizar funções como foto, video e etc.</string>
     <string name="permission_cmon_dialog_camera_accept">Para funções como tirar fotos, videos é necessário permissão para utilizar a camera. &settings; <b>Camera</b>.</string>
-    <string name="permission_cmon_dialog_location">Se você negar acesso a localização do dispositivo, não será possivel encontrar sua localização atual.</string>
+    <string name="permission_cmon_dialog_location">Se você negar acesso a localização do dispositivo, não será possível encontrar sua localização atual.</string>
     <string name="permission_cmon_dialog_location_accept">Para encontrar sua localização atual é necessário permissão para utilizar o GPS do dispositivo. &settings; <b>Local</b>.</string>
-    <string name="permission_cmon_dialog_microphone">Se você negar acesso ao microfone do dispositivo, não será possivel utilizar essa função.</string>
+    <string name="permission_cmon_dialog_microphone">Se você negar acesso ao microfone do dispositivo, não será possível utilizar essa função.</string>
     <string name="permission_cmon_dialog_microphone_accept">Para utilizar essa função é necessário permissão para utilizar o microfone do dispositivo. &settings; <b>Microfone</b>.</string>
-    <string name="permission_cmon_dialog_storage">Se você negar acesso ao armazenamento do dispositivo, não será possivel salvar fotos, videos etc.</string>
+    <string name="permission_cmon_dialog_phone">Se você negar acesso ao recurso de telefonia, não será possível utilizar essa função.</string>
+    <string name="permission_cmon_dialog_phone_accept">Para utilizar essa função é necessário permissão para utilizar os recursos de telefonia do dispositivo. &settings; <b>Phone</b>.</string>
+    <string name="permission_cmon_dialog_sensors">Se você negar acesso aos sensores do dispositivo, não será possível utilizar essa função.</string>
+    <string name="permission_cmon_dialog_sensors_accept">Para essa função é necessário permissão para utilizar os sensores do dispositivo. &settings; <b>Sensores corporais</b>.</string>
+    <string name="permission_cmon_dialog_sms">Se você negar acesso ao recurso de SMS, não será possível utilizar essa função.</string>
+    <string name="permission_cmon_dialog_sms_accept">Para essa função é necessário permissão para utilizar os recursos de SMS. &settings; <b>SMS</b>.</string>
+    <string name="permission_cmon_dialog_storage">Se você negar acesso ao armazenamento do dispositivo, não será possível salvar fotos, videos etc.</string>
     <string name="permission_cmon_dialog_storage_accept">Para salvar fotos, videos é necessário permissão para utilizar o armazenamento do dispositivo. &settings; <b>Armazenamento</b>.</string>
     <string name="permission_cmon_rationale_camera">Necessário permissão para camera.</string>
     <string name="permission_cmon_rationale_contacts">Necessário permissão para conta.</string>
     <string name="permission_cmon_rationale_location">Necessário permissão para localização.</string>
     <string name="permission_cmon_rationale_microphone">Necessário permissão para o microfone.</string>
+    <string name="permission_cmon_rationale_phone">Necessário permissão para recursos de telefonia.</string>
+    <string name="permission_cmon_rationale_sensors">Necessário permissão para os sensores.</string>
+    <string name="permission_cmon_rationale_sms">Necessário permissão para recursos de SMS.</string>
     <string name="permission_cmon_rationale_storage">Necessário permissão de armazenamento.</string>
     <string name="permission_cmon_accepted">Permissão concedida.</string>
     <string name="permission_cmon_snackbar_know_more">saiba mais</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!DOCTYPE resources [<!ENTITY settings "\n\n To enable, click on: <b>Settings > Permissions</b> and enable the">]>
+<!DOCTYPE resources [<!ENTITY settings "\n\n To enable, click on: <b>Settings > Permissions ></b>">]>
 
 <resources>
     <string name="app_cmon_version">Version: %1$s</string>
@@ -22,12 +22,21 @@
     <string name="permission_cmon_dialog_location_accept">To find your current location is necessary permission to use the device\'s GPS. &settings; <b>Location</b>.</string>
     <string name="permission_cmon_dialog_microphone">If you deny access to the device\'s microphone, you can not use this function.</string>
     <string name="permission_cmon_dialog_microphone_accept">To use this feature, permission is required to use the device\'s microphone. &settings; <b>Microphone</b>.</string>
+    <string name="permission_cmon_dialog_phone">If you deny access to the telephony feature, you will not be able to use this feature.</string>
+    <string name="permission_cmon_dialog_phone_accept">To use this function, you must have permission to use the device\'s telephony features. &settings; <b>Phone</b>.</string>
+    <string name="permission_cmon_dialog_sensors">If you deny access to the device\'s sensors, you can not use this feature.</string>
+    <string name="permission_cmon_dialog_sensors_accept">Permission is required for this function to use the sensors in the device. &settings; <b>Body sensors</b>.</string>
+    <string name="permission_cmon_dialog_sms">If you deny access to the SMS feature, you will not be able to use this feature.</string>
+    <string name="permission_cmon_dialog_sms_accept">This role requires permission to use the SMS features.. &settings; <b>SMS</b>.</string>
     <string name="permission_cmon_dialog_storage">If access to the storage of the device is denied, you will not be able to save pictures taken of the content.</string>
     <string name="permission_cmon_dialog_storage_accept">To save pictures taken of the content, permission to use the storage of the device is required. &settings; <b>Storage</b>.</string>
     <string name="permission_cmon_rationale_contacts">Account permission required.</string>
     <string name="permission_cmon_rationale_camera">Permission to access the camera required.</string>
     <string name="permission_cmon_rationale_location">Necessary permission for location.</string>
     <string name="permission_cmon_rationale_microphone">Necessary permission for microphone.</string>
+    <string name="permission_cmon_rationale_phone">Permission is required for telephony resources.</string>
+    <string name="permission_cmon_rationale_sensors">Permission is required for sensors.</string>
+    <string name="permission_cmon_rationale_sms">Permission is required for SMS resources.</string>
     <string name="permission_cmon_rationale_storage">Storage permission required.</string>
     <string name="permission_cmon_accepted">Permission granted.</string>
     <string name="permission_cmon_snackbar_know_more">more info</string>

@@ -21,7 +21,7 @@ internal class PermissionHelper constructor(
 {
     var justify: Boolean = false
 
-    fun grandPermission(permission: String, request: Int, callback: Callback)
+    fun grandPermission(vararg permission: String, request: Int, callback: Callback)
     {
         val requestPermission = shouldShowRequestPermissionRationale(permission)
 
@@ -34,7 +34,7 @@ internal class PermissionHelper constructor(
             }
             else
             {
-                requestPermissions(arrayOf(permission), request)
+                requestPermissions(permission, request)
             }
         }
         else
@@ -61,7 +61,7 @@ internal class PermissionHelper constructor(
         return false
     }
 
-    private fun requestPermissions(permissions: Array<String>, @IntRange(from = 0) requestCode: Int)
+    private fun requestPermissions(permissions: Array<out String>, @IntRange(from = 0) requestCode: Int)
     {
         activity?.let {
             ActivityCompat.requestPermissions(it, permissions, requestCode)
