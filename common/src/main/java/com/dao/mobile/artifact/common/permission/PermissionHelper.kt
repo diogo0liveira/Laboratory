@@ -2,14 +2,13 @@ package com.dao.mobile.artifact.common.permission
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.view.View
 import androidx.annotation.IntRange
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.dao.mobile.artifact.common.PERMISSION_CAMERA_SHOW
-import com.dao.mobile.artifact.common.PERMISSION_CONTACTS_SHOW
-import com.dao.mobile.artifact.common.PermissionBase
+import com.dao.mobile.artifact.common.Drawable
+import com.dao.mobile.artifact.common.R
 
 /**
  * Created in 12/02/19 17:02.
@@ -18,45 +17,30 @@ import com.dao.mobile.artifact.common.PermissionBase
  */
 internal class PermissionHelper constructor(
     private val activity: AppCompatActivity?,
-    private val fragment: Fragment?,
-    private val anchor: View)
+    private val fragment: Fragment?)
 {
+    var justify: Boolean = false
 
-    fun grandPermission(permission: String, request: Int)
+    fun grandPermission(permission: String, request: Int, callback: Callback)
     {
-        if(shouldShowRequestPermissionRationale(permission))
+        val requestPermission = shouldShowRequestPermissionRationale(permission)
+
+        if(requestPermission || (!justify && !requestPermission))
         {
-            requestPermissions(arrayOf(permission), request)
+            if(justify)
+            {
+                callback.showDialog()
+                justify = false
+            }
+            else
+            {
+                requestPermissions(arrayOf(permission), request)
+            }
         }
         else
         {
-
+            callback.showSnackbar()
         }
-
-//        if(shouldShowRequestPermissionRationale(permission))
-//        {
-//            if(repeat)
-//            {
-//                callback.showDialog()
-//                reportPreferences(PERMISSION_CAMERA_SHOW)
-//                repeat = false
-//            }
-//            else
-//            {
-//                requestPermissions(arrayOf(permission), request)
-//            }
-//        }
-//        else
-//        {
-//            if(preferences.getBoolean(PERMISSION_CONTACTS_SHOW, false))
-//            {
-//                callback.showSnackbar()
-//            }
-//            else
-//            {
-//                requestPermissions(arrayOf(permission), request)
-//            }
-//        }
     }
 
     fun checkSelfPermission(permission: String): Boolean
@@ -86,8 +70,25 @@ internal class PermissionHelper constructor(
         fragment?.requestPermissions(permissions, requestCode)
     }
 
+    fun buildDialog(): AlertDialog.Builder
+    {
+        val builder = AlertDialog.Builder(getContext())
+        builder.setIcon(Drawable.draw(R.drawable.vd_cmon_warning_24dp, R.color.alert_yellow))
+        builder.setTitle(R.string.permission_cmon_dialog_title)
+        builder.setPositiveButton(android.R.string.ok, null)
+        builder.setCancelable(false)
+        return builder
+    }
+
     private fun getContext(): Context
     {
         return (activity ?: fragment?.activity!!)
+    }
+
+    interface Callback
+    {
+        fun showDialog()
+
+        fun showSnackbar()
     }
 }

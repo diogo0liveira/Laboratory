@@ -1,4 +1,4 @@
-package com.dao.mobile.artifact.common
+package com.dao.mobile.artifact.common.permission
 
 import android.Manifest
 import android.os.Build

@@ -1,6 +1,6 @@
 package com.dao.mobile.artifact.common
 
-import android.Manifest
+import android.R
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.filters.LargeTest
@@ -9,6 +9,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
 import com.dao.mobile.artifact.common.helper.ActivityPermissionTest
+import com.dao.mobile.artifact.common.permission.Contacts
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
@@ -62,7 +63,7 @@ class PermissionTest : InstrumentationRuleTest()
 
             scenario.onActivity { activity ->
 //                automation.executeShellCommand("pm grant ${InstrumentationRegistry.getInstrumentation().context.packageName} ${Manifest.permission.GET_ACCOUNTS}")
-                permission = Permission(activity, activity.findViewById(android.R.id.content))
+                permission = Permission(activity, activity.findViewById(R.id.content))
                 assertThat(permission.isPermissionContacts(Contacts.GET), `is`(true))
             }
         }

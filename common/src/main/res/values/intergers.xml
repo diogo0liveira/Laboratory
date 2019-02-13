@@ -5,5 +5,6 @@
     <integer name="cmon_request_contacts">2</integer>
     <integer name="cmon_request_location">3</integer>
     <integer name="cmon_request_storage">4</integer>
-    <integer name="cmon_request_multi_permissions">5</integer>
+    <integer name="cmon_request_microphone">5</integer>
+    <integer name="cmon_request_multi_permissions">6</integer>
 </resources>

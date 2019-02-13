@@ -1,7 +1,6 @@
 package com.dao.mobile.artifact.common.mvp
 
 import android.os.Bundle
-
 import com.dao.mobile.artifact.common.Permission
 
 /**

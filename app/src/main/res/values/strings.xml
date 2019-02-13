@@ -5,7 +5,14 @@
 
     <string name="app_name">Laboratory</string>
     <string name="main_button_sqlite">SQLITE</string>
+    <string name="main_button_permission">PERMISSION</string>
 
     <string name="sqlite_label_console">Console</string>
     <string name="sqlite_button_run">RUN</string>
+
+    <string name="permission_button_grant">GRANT</string>
+    <string name="permission_label_has_permission">HAS PERMISSION</string>
+
+    <string name="activity_name_sqlite">Sqlite</string>
+    <string name="activity_name_permission">Permission</string>
 </resources>
