@@ -21,6 +21,28 @@ internal class PermissionHelper constructor(
 {
     var justify: Boolean = false
 
+    fun grandPermission(permission: String, request: Int, callback: Callback)
+    {
+        val requestPermission = shouldShowRequestPermissionRationale(permission)
+
+        if(requestPermission || (!justify && !requestPermission))
+        {
+            if(justify)
+            {
+                callback.showDialog()
+                justify = false
+            }
+            else
+            {
+                requestPermissions(arrayOf(permission), request)
+            }
+        }
+        else
+        {
+            callback.showSnackbar()
+        }
+    }
+
     fun grandPermission(vararg permission: String, request: Int, callback: Callback)
     {
         val requestPermission = shouldShowRequestPermissionRationale(permission)
