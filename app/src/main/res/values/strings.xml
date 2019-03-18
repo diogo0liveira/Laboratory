@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!DOCTYPE resources [<!ENTITY settings "\n\n Para permitir, clique em: <b>Configurações > Permissões ></b>">]>
+
 <resources xmlns:tools="http://schemas.android.com/tools"
            tools:ignore="MissingTranslation">
 
@@ -12,7 +14,12 @@
 
     <string name="permission_button_grant">GRANT</string>
     <string name="permission_button_grant_multiple">GRANT MULTIPLE</string>
+    <string name="permission_button_grant_permission_2">PERMISSION 2</string>
     <string name="permission_label_has_permission">HAS PERMISSION</string>
+
+    <string name="permission_contacts">Para prosseguir é necessário permissão para utilizar o gerenciador de contas do dispositivo. Caso contrário não será possivel utilizar está função.</string>
+    <string name="permission_contacts_accept">É necessário permissão para utilizar o gerenciador de contas. &settings; <b>Contatos</b>.</string>
+    <string name="permission_rationale_contacts">Necessário permissão para conta.</string>
 
     <string name="activity_name_sqlite">Sqlite</string>
     <string name="activity_name_permission">Permission</string>
