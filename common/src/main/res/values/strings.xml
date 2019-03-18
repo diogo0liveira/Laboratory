@@ -30,6 +30,8 @@
     <string name="permission_cmon_dialog_sms_accept">Para essa função é necessário permissão para utilizar os recursos de SMS. &settings; <b>SMS</b>.</string>
     <string name="permission_cmon_dialog_storage">Se você negar acesso ao armazenamento do dispositivo, não será possível salvar fotos, videos etc.</string>
     <string name="permission_cmon_dialog_storage_accept">Para salvar fotos, videos é necessário permissão para utilizar o armazenamento do dispositivo. &settings; <b>Armazenamento</b>.</string>
+    <string name="permission_cmon_dialog_multiple">Algumas permissões são necessárias para o funcionamento da aplicação.</string>
+    <string name="permission_cmon_dialog_multiple_accept">Para algumas funcionalidades é necessário conceder permissão de acesso para a aplicação. &settings;</string>
     <string name="permission_cmon_rationale_camera">Necessário permissão para camera.</string>
     <string name="permission_cmon_rationale_contacts">Necessário permissão para conta.</string>
     <string name="permission_cmon_rationale_location">Necessário permissão para localização.</string>
@@ -38,6 +40,7 @@
     <string name="permission_cmon_rationale_sensors">Necessário permissão para os sensores.</string>
     <string name="permission_cmon_rationale_sms">Necessário permissão para recursos de SMS.</string>
     <string name="permission_cmon_rationale_storage">Necessário permissão de armazenamento.</string>
+    <string name="permission_cmon_rationale_multiple">Necessário algumas permissões.</string>
     <string name="permission_cmon_accepted">Permissão concedida.</string>
     <string name="permission_cmon_snackbar_know_more">saiba mais</string>
 </resources>

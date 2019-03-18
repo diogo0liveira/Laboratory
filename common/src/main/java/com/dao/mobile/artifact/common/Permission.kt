@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.dao.mobile.artifact.common.permission.*
 import com.google.android.material.snackbar.Snackbar
-import androidx.core.app.ActivityCompat.requestPermissions
-
 
 
 /**
@@ -37,21 +35,21 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
      *
      * @return (true se permissão concedida)
      */
-    fun hasPermissionCamera() = helper.checkSelfPermission(CAMERA)
+    fun hasPermissionCamera() = helper.checkSelfPermission(Camera.OPEN.value())
 
     /**
      * Verifica se tem permissão para utilizar a localização.
      *
      * @return (true se permissão concedida)
      */
-    fun isPermissionLocation(type: Location = Location.ACCESS_FINE) = helper.checkSelfPermission(type.value())
+    fun hasPermissionLocation(type: Location = Location.ACCESS_FINE) = helper.checkSelfPermission(type.value())
 
     /**
      * Verifica se tem permissão para utilizar o microfone.
      *
      * @return (true se permissão concedida)
      */
-    fun hasPermissionMicrophone() = helper.checkSelfPermission(MICROPHONE)
+    fun hasPermissionMicrophone() = helper.checkSelfPermission(Microphone.RECORD.value())
 
     /**
      * Verifica se tem permissão para recursos de telefonia.
@@ -66,7 +64,7 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
      * @return (true se permissão concedida)
      */
     @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
-    fun hasPermissionSensors() = helper.checkSelfPermission(SENSORS)
+    fun hasPermissionSensors() = helper.checkSelfPermission(Sensors.BODY.value())
 
     /**
      * Verifica se tem permissão para recursos de SMS.
@@ -81,6 +79,10 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
      * @return (true se permissão concedida)
      */
     fun hasPermissionStorage(type: Storage = Storage.READ) = helper.checkSelfPermission(type.value())
+
+    fun hasMultiplePermissions(vararg permissions: Type): Boolean {
+      return permissions.filterNot { helper.checkSelfPermission(it.value()) }.isEmpty()
+    }
 
     /**
      * Solicita a permissão para o usuário para utilizar a conta.
@@ -109,7 +111,7 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
      */
     fun camera()
     {
-        helper.grandPermission(CAMERA, REQUEST_CAMERA, object : PermissionHelper.Callback
+        helper.grandPermission(Camera.OPEN.value(), REQUEST_CAMERA, object : PermissionHelper.Callback
         {
             override fun showDialog()
             {
@@ -153,7 +155,7 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
      */
     fun microphone()
     {
-        helper.grandPermission(MICROPHONE, REQUEST_MICROPHONE, object : PermissionHelper.Callback
+        helper.grandPermission(Microphone.RECORD.value(), REQUEST_MICROPHONE, object : PermissionHelper.Callback
         {
             override fun showDialog()
             {
@@ -187,7 +189,7 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
                 //@formatter:off
                     showSnackbarKnowMore(R.string.permission_cmon_rationale_phone,
                         R.string.permission_cmon_dialog_phone_accept)
-                    //@formatter:on
+                //@formatter:on
             }
         })
     }
@@ -198,7 +200,7 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
     @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
     fun sensors()
     {
-        helper.grandPermission(SENSORS, REQUEST_SENSORS, object : PermissionHelper.Callback
+        helper.grandPermission(Sensors.BODY.value(), REQUEST_SENSORS, object : PermissionHelper.Callback
         {
             override fun showDialog()
             {
@@ -210,7 +212,7 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
                 //@formatter:off
                     showSnackbarKnowMore(R.string.permission_cmon_rationale_sensors,
                         R.string.permission_cmon_dialog_sensors_accept)
-                    //@formatter:on
+                //@formatter:on
             }
         })
     }
@@ -232,7 +234,7 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
                 //@formatter:off
                     showSnackbarKnowMore(R.string.permission_cmon_rationale_sms,
                         R.string.permission_cmon_dialog_sms_accept)
-                    //@formatter:on
+                //@formatter:on
             }
         })
     }
@@ -254,37 +256,33 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
                 //@formatter:off
                     showSnackbarKnowMore(R.string.permission_cmon_rationale_storage,
                         R.string.permission_cmon_dialog_storage_accept)
-                    //@formatter:on
+                //@formatter:on
             }
         })
     }
 
-    private fun multiplePermissions(vararg permissions: Type)
+    fun multiplePermissions(vararg permissions: Type)
     {
+        helper.grandPermission(
+            permissions = *permissions,
+            request = REQUEST_MULTIPLE_PERMISSIONS,
+            callback = object : PermissionHelper.Callback
+        {
+            override fun showDialog()
+            {
+                showDialogInformative(R.string.permission_cmon_dialog_multiple) { multiplePermissions(*permissions) }
+            }
 
-//        if(permissions != null)
-//        {
-//            val listPermissionsNeeded = ArrayList(permissions.size)
-//
-//            for(permission in permissions)
-//            {
-//                if(ContextCompat.checkSelfPermission(activity, permission) !== PackageManager.PERMISSION_GRANTED)
-//                {
-//                    listPermissionsNeeded.add(permission)
-//                }
-//            }
-//
-//            if(!listPermissionsNeeded.isEmpty())
-//            {
-//                ActivityCompat.requestPermissions(
-//                    activity,
-//                    listPermissionsNeeded.toTypedArray(),
-//                    REQUEST_MULTIPLE_PERMISSIONS
-//                )
-//            }
-//        }
+            override fun showSnackbar()
+            {
+                //@formatter:off
+                    showSnackbarKnowMore(R.string.permission_cmon_rationale_multiple,
+                        R.string.permission_cmon_dialog_multiple_accept)
+                //@formatter:on
+            }
+
+        })
     }
-
 
     fun accepted(requestCode: Int, permissions: Array<out String>, grantResults: IntArray): Boolean
     {
@@ -296,13 +294,18 @@ class Permission private constructor(activity: AppCompatActivity?, fragment: Fra
         {
             if(requestCode == REQUEST_MULTIPLE_PERMISSIONS)
             {
-                for(result in grantResults)
-                {
-                    if(result != PackageManager.PERMISSION_GRANTED)
+                val requestPermissions = mutableListOf<Type>()
+
+                grantResults.forEachIndexed { index, value ->
+                    if(value == PackageManager.PERMISSION_DENIED)
                     {
-                        return false
+                        requestPermissions.add(toType(permissions[index]))
                     }
                 }
+
+                helper.justify = requestPermissions.isNotEmpty()
+                multiplePermissions(*requestPermissions.toTypedArray())
+                return false
             }
             else
             {

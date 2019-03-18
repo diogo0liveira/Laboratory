@@ -30,6 +30,8 @@
     <string name="permission_cmon_dialog_sms_accept">This role requires permission to use the SMS features.. &settings; <b>SMS</b>.</string>
     <string name="permission_cmon_dialog_storage">If access to the storage of the device is denied, you will not be able to save pictures taken of the content.</string>
     <string name="permission_cmon_dialog_storage_accept">To save pictures taken of the content, permission to use the storage of the device is required. &settings; <b>Storage</b>.</string>
+    <string name="permission_cmon_dialog_multiple">Some permissions are required for the application to work.</string>
+    <string name="permission_cmon_dialog_multiple_accept">For some features it is necessary to grant access permission for the application. &settings;</string>
     <string name="permission_cmon_rationale_contacts">Account permission required.</string>
     <string name="permission_cmon_rationale_camera">Permission to access the camera required.</string>
     <string name="permission_cmon_rationale_location">Necessary permission for location.</string>
@@ -38,6 +40,7 @@
     <string name="permission_cmon_rationale_sensors">Permission is required for sensors.</string>
     <string name="permission_cmon_rationale_sms">Permission is required for SMS resources.</string>
     <string name="permission_cmon_rationale_storage">Storage permission required.</string>
+    <string name="permission_cmon_rationale_multiple">Some permissions required.</string>
     <string name="permission_cmon_accepted">Permission granted.</string>
     <string name="permission_cmon_snackbar_know_more">more info</string>
 </resources>

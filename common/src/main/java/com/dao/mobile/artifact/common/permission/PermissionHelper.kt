@@ -43,9 +43,18 @@ internal class PermissionHelper constructor(
         }
     }
 
-    fun grandPermission(vararg permission: String, request: Int, callback: Callback)
+    fun grandPermission(vararg permissions: Type, request: Int, callback: Callback)
     {
-        val requestPermission = shouldShowRequestPermissionRationale(permission)
+        val requestPermissions = mutableListOf<String>()
+        var requestPermission = false
+
+        permissions.forEach { permission ->
+            if(shouldShowRequestPermissionRationale(permission.value()))
+            {
+                requestPermissions.add(permission.value())
+                requestPermission = true
+            }
+        }
 
         if(requestPermission || (!justify && !requestPermission))
         {
@@ -56,7 +65,7 @@ internal class PermissionHelper constructor(
             }
             else
             {
-                requestPermissions(permission, request)
+                requestPermissions(requestPermissions.toTypedArray(), request)
             }
         }
         else
