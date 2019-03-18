@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,12 +15,24 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="@string/permission_button_grant"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGrantMultiple"/>
+
+    <Button
+        android:id="@+id/buttonGrantMultiple"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/permission_button_grant_multiple"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/textLabelHasPermission"/>
+        app:layout_constraintBottom_toTopOf="@+id/textLabelHasPermission"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGrant"/>
 
     <TextView
         android:id="@+id/textLabelHasPermission"
@@ -32,10 +44,10 @@
         android:text="@string/permission_label_has_permission"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGrant"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGrantMultiple"
         tools:visibility="visible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

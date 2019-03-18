@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.dao.mobile.artifact.common.Permission
+import com.dao.mobile.artifact.common.permission.Camera
+import com.dao.mobile.artifact.common.permission.Contacts
+import com.dao.mobile.artifact.common.permission.Storage
 import com.dao.mobile.laboratory.app.R
 import kotlinx.android.synthetic.main.activity_permission.*
 
@@ -42,12 +45,17 @@ class PermissionActivity : AppCompatActivity(), View.OnClickListener
             {
                 grantPermission()
             }
+            R.id.buttonGrantMultiple ->
+            {
+                grantMultiplePermission()
+            }
         }
     }
 
     private fun initializeView()
     {
         buttonGrant.setOnClickListener(this)
+        buttonGrantMultiple.setOnClickListener(this)
     }
 
     private fun grantPermission()
@@ -58,7 +66,19 @@ class PermissionActivity : AppCompatActivity(), View.OnClickListener
         }
         else
         {
-            permission.
+            permission.contacts(Contacts.GET)
+        }
+    }
+
+    private fun grantMultiplePermission()
+    {
+        if(permission.hasMultiplePermissions(Contacts.GET, Camera.OPEN, Storage.READ))
+        {
+            textLabelHasPermission.visibility = View.VISIBLE
+        }
+        else
+        {
+            permission.multiplePermissions(Contacts.GET, Camera.OPEN, Storage.READ)
         }
     }
 }
